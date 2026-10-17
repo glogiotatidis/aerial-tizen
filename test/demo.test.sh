@@ -44,6 +44,12 @@ check grep -q "toBrowserUrl(url) + '#t=1'" "$OUT/site/index.html"
 msg="Backdrop blur sits on the blur class only, never on the base menu"
 check sh -c 'grep -Pzoq "#menu\.blur \{[^}]*backdrop-filter" "$1" && ! grep -Pzoq "#menu \{[^}]*backdrop-filter" "$1"' _ "$ROOT/css/style.css"
 
+msg="The list header is opaque so scrolled rows cannot show through it"
+check grep -q "#catalog-list h2 {[^}]*background: rgb(" "$OUT/site/index.html"
+
+msg="The video list expands with a transition instead of popping in"
+check grep -q "#catalog-list.open { visibility: visible; opacity: 1; transform: none; transition" "$OUT/site/index.html"
+
 msg="The demo page loads the key script"
 check grep -q 'src="keys.js"' "$OUT/site/index.html"
 
