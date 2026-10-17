@@ -36,7 +36,7 @@ msg="The demo ships the list and key scripts"
 check [ -s "$OUT/site/list.js" -a -s "$OUT/site/keys.js" -a -s "$OUT/site/proxy.js" -a -s "$OUT/site/config.js" ]
 
 msg="The demo thumbnail fills the viewport like the video does"
-check grep -Pzoq '#preload \{\s*width: 100%;\s*height: 100%;' "$OUT/site/index.html"
+check grep -Pzoq '#preload \{[^}]*width: calc\(100% \+ 4px\);\s*height: calc\(100% \+ 4px\);' "$OUT/site/index.html"
 
 msg="The demo video starts at the second the thumbnail is cut from"
 check grep -q "toBrowserUrl(url) + '#t=1'" "$OUT/site/index.html"
@@ -49,6 +49,9 @@ check grep -q "#catalog-list h2 {[^}]*background: rgb(" "$OUT/site/index.html"
 
 msg="The video list expands with a transition instead of popping in"
 check grep -q "#catalog-list.open { visibility: visible; opacity: 1; transform: none; transition" "$OUT/site/index.html"
+
+msg="The demo video offers no picture-in-picture button"
+check grep -q '<video id="sim-video" muted disablepictureinpicture' "$OUT/site/index.html"
 
 msg="The demo page loads the key script"
 check grep -q 'src="keys.js"' "$OUT/site/index.html"
