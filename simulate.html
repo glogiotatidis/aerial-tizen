@@ -80,8 +80,10 @@
       font: 15px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, sans-serif;
     }
     #catalog-list.open { display: block; }
+    #catalog-list input { width: 100%; box-sizing: border-box; padding: 10px 14px; border: 0; border-radius: 8px; background: rgba(255, 255, 255, 0.12); color: #fff; font: inherit; }
     #catalog-list h2 { margin: 28px 0 8px; font-size: 20px; color: #fff; }
     #catalog-list div { padding: 6px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+    #catalog-list button { margin-right: 12px; padding: 2px 12px; border: 0; border-radius: 6px; background: #2f6bff; color: #fff; font: inherit; cursor: pointer; }
     #catalog-list a { color: #8ab4ff; margin-right: 12px; }
     #catalog-list span { color: rgba(255, 255, 255, 0.55); }
     #sim-keys {
@@ -141,7 +143,7 @@
     <div id="menu-hint">ESC to close</div>
   </div>
   <div id="sim-note">
-    Placeholder frames, not video. Apple serves the aerials over plain http and signs
+    Stills from each video, not the video itself. Apple serves the aerials over plain http and signs
     https with a private CA, so a page served over https can load neither.
     Everything else here is the app the TV runs.
   </div>
@@ -163,6 +165,7 @@
   <script src="js/catalog.js"></script>
   <script src="js/h264map.js"></script>
   <script src="list.js"></script>
+  <script src="keys.js"></script>
   <script>
   // ── Mock Samsung APIs ──
   // Wraps HTML5 <video> to match AVPlay interface
@@ -315,30 +318,17 @@
   // ── Remap browser keys to Tizen keyCodes ──
   // Space → PlayPause (10252), Escape → Back (10009)
   document.addEventListener('keydown', function (e) {
-    if (e.keyCode === 32) { // Space → PlayPause
+    var action = simKeyAction(e.keyCode, e.target.tagName, document.getElementById('catalog-list').classList.contains('open'));
+    if (action === 'pass') return;
+    if (action === 'playpause' || action === 'back') {
       e.preventDefault();
-      var ev = new KeyboardEvent('keydown', {keyCode: 10252, bubbles: true});
-      document.dispatchEvent(ev);
-      e.stopImmediatePropagation();
-      return;
+      document.dispatchEvent(new KeyboardEvent('keydown', {keyCode: action === 'playpause' ? 10252 : 10009, bubbles: true}));
     }
-    if (e.keyCode === 76) { // L → catalog list
-      toggleCatalogList();
-      return;
-    }
-    if (e.keyCode === 27 && document.getElementById('catalog-list').classList.contains('open')) {
+    if (action === 'toggle-list' || action === 'close-list') {
       e.preventDefault();
       toggleCatalogList();
-      e.stopImmediatePropagation();
-      return;
     }
-    if (e.keyCode === 27) { // Escape → Back
-      e.preventDefault();
-      var ev2 = new KeyboardEvent('keydown', {keyCode: 10009, bubbles: true});
-      document.dispatchEvent(ev2);
-      e.stopImmediatePropagation();
-      return;
-    }
+    e.stopImmediatePropagation();
   }, true);
 
   // Fade the keyboard help after first interaction

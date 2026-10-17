@@ -1,5 +1,10 @@
-function buildCatalogList(catalog, doc) {
+function buildCatalogList(catalog, doc, onPlay) {
   var root = doc.createElement('div');
+  var search = doc.createElement('input');
+  search.setAttribute('type', 'search');
+  search.setAttribute('placeholder', 'Filter ' + catalog.length + ' videos');
+  search.oninput = function () { filterCatalogList(root, search.value); };
+  root.appendChild(search);
   var groups = {};
   var order = [];
   catalog.forEach(function (video) {
@@ -15,6 +20,9 @@ function buildCatalogList(catalog, doc) {
     root.appendChild(heading);
     groups[category].forEach(function (video) {
       var row = doc.createElement('div');
+      var play = doc.createElement('button');
+      play.textContent = 'Play';
+      play.onclick = function () { onPlay(catalog.indexOf(video)); };
       var link = doc.createElement('a');
       link.textContent = video.label;
       link.setAttribute('href', video.url);
@@ -22,6 +30,8 @@ function buildCatalogList(catalog, doc) {
       link.setAttribute('rel', 'noopener noreferrer');
       var text = doc.createElement('span');
       text.textContent = video.description;
+      row.searchText = (video.label + ' ' + video.description).toLowerCase();
+      row.appendChild(play);
       row.appendChild(link);
       row.appendChild(text);
       root.appendChild(row);
@@ -30,8 +40,30 @@ function buildCatalogList(catalog, doc) {
   return root;
 }
 
+function filterCatalogList(root, query) {
+  var needle = query.trim().toLowerCase();
+  var heading = null;
+  var shown = 0;
+  root.children.forEach(function (child) {
+    if (child.tag === 'h2') {
+      if (heading) heading.hidden = shown === 0;
+      heading = child;
+      shown = 0;
+    } else if (child.searchText !== undefined) {
+      child.hidden = needle !== '' && child.searchText.indexOf(needle) < 0;
+      if (!child.hidden) shown++;
+    }
+  });
+  if (heading) heading.hidden = shown === 0;
+}
+
+function playFromCatalogList(index) {
+  toggleCatalogList();
+  playVideo(index);
+}
+
 function toggleCatalogList() {
   var panel = document.getElementById('catalog-list');
-  if (!panel.firstChild) panel.appendChild(buildCatalogList(CATALOG, document));
+  if (!panel.firstChild) panel.appendChild(buildCatalogList(CATALOG, document, playFromCatalogList));
   panel.classList.toggle('open');
 }

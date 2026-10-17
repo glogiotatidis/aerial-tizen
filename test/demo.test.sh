@@ -23,14 +23,17 @@ have=$(cd "$OUT/site/preload" && find . -type f -name '*.webp' -size +0 -printf 
 msg="Every catalog video has a demo thumbnail"
 check [ "$want" = "$have" ]
 
-msg="The demo thumbnails are drawn, not cut from Apple's footage (under 100 KB each)"
-check [ -z "$(find "$OUT/site/preload" -type f -size +100k)" ]
+msg="No demo thumbnail is larger than 200 KB"
+check [ -z "$(find "$OUT/site/preload" -type f -size +200k)" ]
 
 msg="The demo page loads the list script it ships"
 check grep -q 'src="list.js"' "$OUT/site/index.html"
 
-msg="The demo ships the list script"
-check [ -s "$OUT/site/list.js" ]
+msg="The demo ships the list and key scripts"
+check [ -s "$OUT/site/list.js" -a -s "$OUT/site/keys.js" ]
+
+msg="The demo page loads the key script"
+check grep -q 'src="keys.js"' "$OUT/site/index.html"
 
 echo ""
 if [ "$failed" -eq 0 ]; then
