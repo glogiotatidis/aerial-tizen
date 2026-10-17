@@ -45,6 +45,10 @@ echo "== dco =="
 if bash "$DIR/dco.test.sh"; then :; else failed=1; fi
 
 echo
+echo "== fixes have tests =="
+if bash "$DIR/tests-policy.test.sh"; then :; else failed=1; fi
+
+echo
 echo "== demo =="
 if bash "$DIR/demo.test.sh"; then :; else failed=1; fi
 
