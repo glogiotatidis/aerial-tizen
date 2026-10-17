@@ -44,6 +44,9 @@ check grep -q "toBrowserUrl(url) + '#t=1'" "$OUT/site/index.html"
 msg="Backdrop blur sits on the blur class only, never on the base menu"
 check sh -c 'grep -Pzoq "#menu\.blur \{[^}]*backdrop-filter" "$1" && ! grep -Pzoq "#menu \{[^}]*backdrop-filter" "$1"' _ "$ROOT/css/style.css"
 
+msg="The demo exit screen offers a restart button"
+check grep -q "location.reload()" "$OUT/site/index.html"
+
 msg="The demo page loads the key script"
 check grep -q 'src="keys.js"' "$OUT/site/index.html"
 
