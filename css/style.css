@@ -166,12 +166,22 @@ html, body {
   transform: translate(-50%, -50%);
   z-index: 20;
   background: rgba(0, 0, 0, 0.88);
-  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 28px;
   padding: 40px 50px;
   min-width: 520px;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease;
+}
+
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+  #menu {
+    background: rgba(16, 20, 32, 0.42);
+    -webkit-backdrop-filter: blur(24px) saturate(170%);
+    backdrop-filter: blur(24px) saturate(170%);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  }
 }
 
 #menu.visible {
@@ -193,13 +203,14 @@ html, body {
   justify-content: space-between;
   align-items: center;
   padding: 14px 20px;
-  border-radius: 10px;
+  border-radius: 16px;
   margin-bottom: 4px;
   transition: background 0.15s ease;
 }
 
 .menu-item.active {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25);
 }
 
 .menu-label {
