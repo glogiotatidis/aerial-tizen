@@ -104,6 +104,8 @@ storageInitFile(function (saved) {
   }
   loadSettings();
   buildPlaylist();
+  var fileIndex = parseInt(storageFileSnapshotGet('aerial_index'), 10);
+  if (fileIndex !== videoIndex && playlist.indexOf(fileIndex) >= 0) playVideo(fileIndex);
   telemetry('storage_restored', { backend: storageBackend(), index: videoIndex });
 });
 
