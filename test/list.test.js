@@ -78,7 +78,7 @@ assert.strictEqual(panel.open, true);
 panel.children[0].children.filter(c => c.tag === 'div')[7].children[0].onclick();
 assert.strictEqual(catalog[started[0]].url, panel.children[0].children.filter(c => c.tag === 'div')[7].children[1].attrs.href);
 assert.strictEqual(started.length, 1, 'Play in the opened list starts the video');
-assert.strictEqual(panel.open, false, 'and closes the list');
+assert.strictEqual(panel.open, true, 'and leaves the side list open for the next pick');
 
 const act = ctx.simKeyAction;
 assert.strictEqual(act(32, 'BODY', false), 'playpause');

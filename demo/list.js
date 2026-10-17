@@ -58,7 +58,6 @@ function filterCatalogList(root, query) {
 }
 
 function playFromCatalogList(index) {
-  toggleCatalogList();
   playVideo(index);
 }
 
