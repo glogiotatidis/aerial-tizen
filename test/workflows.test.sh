@@ -15,4 +15,8 @@ check "badge publishes to the badges branch" has badge.yml 'HEAD:badges'
 check "badge only runs after ci on main" has badge.yml 'branches: [main]'
 check "c8 writes the json summary" grep -q json-summary "$ROOT/.c8rc.json"
 check "zizmor ignores the badge trigger" grep -qF "badge.yml:3" "$ROOT/.github/zizmor.yml"
+check "ci runs the linter" has ci.yml 'npm run lint'
+check "lint script exists" grep -q '"lint": "eslint .' "$ROOT/package.json"
+check "release pins the signing identity" has release.yml 'workflows/release.yml@${REF}'
+check "release no longer accepts any workflow" bash -c "! grep -q certificate-identity-regexp '$ROOT/.github/workflows/release.yml'"
 exit "$fails"

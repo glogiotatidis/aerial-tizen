@@ -23,6 +23,13 @@ Last reviewed for release 1.0.2. The project is a Tizen TV app with no server co
 | The proxy Worker used as an open relay | Bandwidth abuse, hosting arbitrary content | It answers only GET, HEAD and OPTIONS, only for Apple video paths, only for the demo's origins, and passes a fixed set of response headers. Tests cover each refusal. |
 | Apple's CDN served over plain HTTP | A network attacker can alter video in transit | Accepted: Apple publishes these videos over HTTP only, and the app cannot verify them. The app treats the stream as untrusted data and plays it only through the TV's decoder. |
 
+## Assurance case
+
+- **Trust boundaries:** the TV runs only the files in the signed release; the network is untrusted; the Apple CDN is trusted for video bytes only; the CI pipeline is trusted to build exactly the tagged commit.
+- **Secure design principles applied:** least privilege (workflows declare minimal permissions), economy of mechanism (no runtime dependencies, no build step), fail-safe defaults (the app plays a video when any optional service fails), complete mediation (every stored value is validated on read), open design (everything is public).
+- **Common weaknesses countered:** injection and cross-site scripting (no HTML is built from untrusted text), untrusted input (settings and the file backend are parsed with allowlists and defaults, and fuzzed with fast-check), secrets in the repo (gitleaks), vulnerable dependencies (osv-scanner and Dependabot), unsafe workflows (zizmor).
+- **Evidence:** the test suite, the fuzz suite, CodeQL, the required checks on both branches, and signed releases.
+
 ## Residual risks
 
 - The maintainer account is a single point of failure. Two-factor authentication and the rulesets reduce it, and a second maintainer would reduce it further.

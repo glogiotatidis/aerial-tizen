@@ -356,7 +356,6 @@ const { PRELOAD_FADE_MS, BUFFER_TIMEOUT_MS, RETRY_DELAYS_MS, ERROR_SKIP_MS, MAX_
 {
   const t = boot();
   const written = {};
-  let readBack = null;
   t.ctx.tizen.filesystem = {
     resolve: (name, ok) => ok({
       resolve: () => ({
@@ -368,7 +367,6 @@ const { PRELOAD_FADE_MS, BUFFER_TIMEOUT_MS, RETRY_DELAYS_MS, ERROR_SKIP_MS, MAX_
       })
     })
   };
-  let restored = null;
   vm.runInContext("storageInitFile(function (saved) { globalThis.__saved = saved; });", t.ctx);
   assert.strictEqual(t.ctx.__saved && t.ctx.__saved.aerial_index, '4', 'the durable file must be read at start-up');
   assert.strictEqual(t.ctx.storageGet('aerial_index'), '4', 'and its values must be readable');
@@ -644,7 +642,7 @@ const { PRELOAD_FADE_MS, BUFFER_TIMEOUT_MS, RETRY_DELAYS_MS, ERROR_SKIP_MS, MAX_
 
 {
   const sent = [];
-  function Img() { Object.defineProperty(this, 'src', { set: v => sent.push(v) }); }
+  function Img() { Object.defineProperty(this, 'src', { set: v => { sent.push(v); } }); }
   const t = boot({ extra: { AERIAL_PROBE_URL: 'http://lan:8090', Image: Img } });
   t.ctx.realTelemetryProbe = vm.runInContext('telemetryProbe', t.ctx);
   vm.runInContext('telemetryProbe()', t.ctx);
@@ -744,7 +742,7 @@ const { PRELOAD_FADE_MS, BUFFER_TIMEOUT_MS, RETRY_DELAYS_MS, ERROR_SKIP_MS, MAX_
   const sent = [];
   function Xhr() { this.open = (m, u) => urls.push(u); this.setRequestHeader = () => {}; this.send = b => sent.push(b); }
   const beacon = [];
-  const t = boot({ extra: { XMLHttpRequest: Xhr, navigator: { sendBeacon: (u, b) => { beacon.push(u); return true; } }, AERIAL_TELEMETRY: { clientToken: 'tok', site: 'datadoghq.eu' } } });
+  const t = boot({ extra: { XMLHttpRequest: Xhr, navigator: { sendBeacon: (u) => { beacon.push(u); return true; } }, AERIAL_TELEMETRY: { clientToken: 'tok', site: 'datadoghq.eu' } } });
   t.ctx.realTelemetry('e', {});
   vm.runInContext('telemetryFlush()', t.ctx);
   assert.ok(/^https:\/\/browser-intake-datadoghq\.eu\/api\/v2\/logs\?dd-api-key=tok/.test(beacon[0]), 'a regional site gets its own intake: ' + beacon[0]);

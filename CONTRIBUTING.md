@@ -68,6 +68,14 @@ Never commit `js/local-config.js`. It holds your LAN address and, if you use tel
 - Include the test that would have caught the bug you fixed.
 - No AI-generated prose in documentation without saying so.
 
+## Coding standard
+
+The app is plain ES5 loaded as scripts, because older Tizen WebKit builds cannot parse anything newer: `var`, function declarations, no arrow functions, no modules. Two-space indent, single quotes, semicolons, see `.editorconfig`. `npm run lint` (ESLint with `eslint.config.js`) enforces the rules a tool can check and CI fails a pull request that does not pass it. Test files use current Node syntax.
+
+## Code review
+
+Every change reaches `develop` through a pull request, and `main` receives only what `develop` holds, through a release PR that needs the code owner's approval. The reviewer checks that the change is one concern, that it keeps the constraints above, that a test fails without it, and that CI is green. A change is accepted when those hold and the reviewer has no open question. Reviewers are named in `.github/CODEOWNERS`.
+
 ## Sign your commits
 
 Every commit needs a `Signed-off-by: Your Name <you@example.com>` line, which you add with `git commit -s`. It states the [Developer Certificate of Origin](https://developercertificate.org/): you wrote the change or have the right to submit it under the project's MIT licence. The `dco` check fails a pull request that has an unsigned commit.

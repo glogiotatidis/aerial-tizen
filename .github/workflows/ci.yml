@@ -17,6 +17,8 @@ jobs:
           for f in js/*.js demo/*.js test/*.js worker/*.mjs test/*.mjs; do node --check "$f"; done
           for f in *.sh demo/*.sh test/*.sh tools/*.sh; do bash -n "$f"; done
       - run: npm ci --ignore-scripts
+      - name: lint
+        run: npm run lint
       - name: tests with the 90% coverage gate
         run: npm run coverage
       - name: coverage percent
