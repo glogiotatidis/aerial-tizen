@@ -54,7 +54,14 @@ function createMenuItemEl(item, isActive) {
   return row;
 }
 
+function supportsBlur() {
+  return typeof CSS !== 'undefined' && !!CSS.supports &&
+    (CSS.supports('backdrop-filter', 'blur(1px)') || CSS.supports('-webkit-backdrop-filter', 'blur(1px)'));
+}
+
 function renderMenu() {
+  if (supportsBlur()) menuEl.classList.add('blur');
+  else menuEl.classList.remove('blur');
   if (settings.menuTheme === 'light') menuEl.classList.add('light');
   else menuEl.classList.remove('light');
   var visible = getVisibleMenuItems();
