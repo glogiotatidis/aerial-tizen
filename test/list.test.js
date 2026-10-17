@@ -96,6 +96,9 @@ assert.strictEqual(act(76, 'INPUT', true), 'swallow', 'typing an L in the filter
 assert.strictEqual(act(32, 'INPUT', true), 'swallow', 'typing a space must not pause the video');
 assert.strictEqual(act(27, 'INPUT', true), 'close-list');
 
+assert.strictEqual(ctx.simBackKey(false), 13, 'Escape on the main screen opens the settings menu');
+assert.strictEqual(ctx.simBackKey(true), 10009, 'Escape in the menu closes it and never exits the demo');
+
 const asset = 'http://sylvan.apple.com/Videos/a_2K_AVC.mov';
 assert.strictEqual(ctx.simProxyUrl(asset, ''), asset, 'without a proxy the URL is untouched');
 assert.strictEqual(ctx.simProxyUrl(asset, 'https://p.example'), 'https://p.example/Videos/a_2K_AVC.mov');
