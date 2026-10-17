@@ -14,6 +14,10 @@
       object-fit: cover;
       z-index: 1;
     }
+    #preload {
+      width: 100%;
+      height: 100%;
+    }
     img#sim-still {
       position: fixed;
       inset: 0;
@@ -199,7 +203,7 @@
   var videoAvplay = {
       _state: 'NONE',
       open: function (url) {
-        simVideo.src = toBrowserUrl(url);
+        simVideo.src = toBrowserUrl(url) + '#t=1';
         this._state = 'IDLE';
       },
       setDisplayRect: function () {},
