@@ -8,5 +8,6 @@
   },
   "devDependencies": {
     "fast-check": "4.10.2"
-  }
+  },
+  "version": "1.0.2"
 }
