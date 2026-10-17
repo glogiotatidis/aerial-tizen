@@ -3,7 +3,9 @@ const path = require('path');
 const vm = require('vm');
 const assert = require('assert');
 
-function boot() {
+function boot(opts) {
+  opts = opts || {};
+  const listeners = {};
   const timers = new Map();
   let nextTimerId = 1;
   let now = 0;
@@ -33,7 +35,7 @@ function boot() {
       const store = new Map();
       return { getItem: k => (store.has(k) ? store.get(k) : null), setItem: (k, v) => store.set(k, String(v)) };
     })(),
-    document: { getElementById: el, addEventListener() {}, createElement: makeEl, createTextNode: () => ({}) },
+    document: { hidden: false, getElementById: el, addEventListener: (type, fn) => (listeners[type] = listeners[type] || []).push(fn), createElement: makeEl, createTextNode: () => ({}) },
     Image: function () {},
     setTimeout: (fn, ms) => { const id = nextTimerId++; timers.set(id, { fn, at: now + (ms || 0) }); return id; },
     clearTimeout: id => timers.delete(id),
@@ -47,9 +49,16 @@ function boot() {
       }
     }
   };
+  Object.assign(ctx, opts.extra || {});
+  let pendingRead = null;
+  if (opts.fileContent !== undefined) {
+    const file = { readAsText: ok => { pendingRead = () => ok(typeof opts.fileContent === 'function' ? opts.fileContent(ctx) : opts.fileContent); }, openStream: (mode, ok) => ok({ write() {}, close() {} }) };
+    const dir = { resolve: () => { if (opts.fileContent === null) throw new Error('no file'); return file; }, createFile: () => file };
+    ctx.tizen.filesystem = { resolve: (where, ok) => ok(dir) };
+  }
   vm.createContext(ctx);
   for (const f of ['storage', 'telemetry', 'settings', 'player', 'menu', 'debug']) {
-    vm.runInContext(fs.readFileSync(path.join(__dirname, '../js', f + '.js'), 'utf8'), ctx);
+    vm.runInContext(fs.readFileSync(path.join(__dirname, '../js', f + '.js'), 'utf8'), ctx, { filename: path.join(__dirname, '../js', f + '.js') });
   }
   // Virtual clock: a test says how long it waited, and the clock decides what
   // that was long enough to fire. Adding a setTimeout anywhere in the player no
@@ -72,7 +81,10 @@ function boot() {
   // keep the real implementation reachable: the spy below replaces the global
   ctx.realTelemetry = ctx.telemetry;
   ctx.telemetry = (event, fields) => events.push([event, fields || {}]);
-  return { ctx, opened, advance, events, elements, pending: () => timers.size, listener: () => listener };
+  if (opts.main) vm.runInContext(fs.readFileSync(path.join(__dirname, '../js/main.js'), 'utf8'), ctx, { filename: path.join(__dirname, '../js/main.js') });
+  const press = code => (listeners.keydown || []).forEach(fn => fn({ keyCode: code }));
+  const hide = hidden => { ctx.document.hidden = hidden; (listeners.visibilitychange || []).forEach(fn => fn()); };
+  return { ctx, opened, advance, events, elements, press, hide, finishRead: () => { if (pendingRead) pendingRead(); }, pending: () => timers.size, listener: () => listener };
 }
 
 const { PRELOAD_FADE_MS, BUFFER_TIMEOUT_MS, RETRY_DELAYS_MS, ERROR_SKIP_MS, MAX_SKIP_DELAY_MS } = boot().ctx;
@@ -571,5 +583,170 @@ const { PRELOAD_FADE_MS, BUFFER_TIMEOUT_MS, RETRY_DELAYS_MS, ERROR_SKIP_MS, MAX_
   for (let i = 0; i < 50; i++) t.ctx.realTelemetry('e' + i, {});
   assert.strictEqual(vm.runInContext('telemetryQueue.length', t.ctx), 0, 'a full queue must flush');
 }
+
+{
+  const t = boot({ main: true });
+  t.advance(PRELOAD_FADE_MS);
+  assert.ok(t.events.some(e => e[0] === 'app_start'), 'main.js must announce the start');
+  assert.strictEqual(t.opened.length, 1, 'main.js must start one video');
+  const calls = [];
+  const avplay = t.ctx.webapis.avplay;
+  t.ctx.avplay = avplay;
+  let state = 'PLAYING';
+  avplay.getState = () => state;
+  avplay.pause = () => { calls.push('pause'); state = 'PAUSED'; };
+  avplay.play = () => { calls.push('play'); state = 'PLAYING'; };
+  t.press(10252);
+  t.press(10252);
+  t.press(19);
+  t.press(415);
+  assert.deepStrictEqual(calls, ['pause', 'play', 'pause', 'play'], 'transport keys must drive avplay');
+  const before = t.opened.length;
+  [417, 39, 427, 428].forEach(code => { t.press(code); t.advance(PRELOAD_FADE_MS); });
+  assert.strictEqual(t.opened.length, before + 4, 'skip keys must each start a video');
+  t.hide(true);
+  t.hide(false);
+  t.advance(PRELOAD_FADE_MS);
+  assert.ok(t.opened.length > before + 4, 'coming back to the app must resume playback');
+  t.press(13);
+  assert.strictEqual(vm.runInContext('menuOpen', t.ctx), true, 'Enter opens the menu');
+  const row = vm.runInContext('menuIndex', t.ctx);
+  t.press(40);
+  assert.notStrictEqual(vm.runInContext('menuIndex', t.ctx), row, 'Down moves the menu');
+  t.press(38);
+  t.press(37);
+  t.press(39);
+  t.press(10009);
+  assert.strictEqual(vm.runInContext('menuOpen', t.ctx), false, 'Back closes the menu');
+  let exited = false;
+  t.ctx.tizen.application.getCurrentApplication = () => ({ exit: () => { exited = true; } });
+  t.press(10009);
+  assert.ok(exited, 'Back on the player exits the app');
+  t.press(413);
+}
+
+{
+  const t = boot({ main: true });
+  const digits = [1, 2, 3, 4, 5];
+  digits.forEach(d => t.press(48 + d));
+  assert.strictEqual(vm.runInContext('settings.devMode', t.ctx), true, '12345 turns developer mode on');
+  t.press(48);
+  digits.forEach(d => t.press(96 + d));
+  assert.strictEqual(vm.runInContext('settings.devMode', t.ctx), false, '12345 on the numpad turns it off');
+}
+
+{
+  const t = boot({ extra: { AERIAL_LOCAL_SERVER: 'http://lan:8090' } });
+  vm.runInContext('loadSettings()', t.ctx);
+  assert.strictEqual(vm.runInContext('settings.customServerUrl', t.ctx), 'http://lan:8090', 'a shipped server address wins');
+  assert.strictEqual(vm.runInContext('settings.customServerEnabled && settings.devMode', t.ctx), true);
+}
+
+{
+  const sent = [];
+  function Img() { Object.defineProperty(this, 'src', { set: v => sent.push(v) }); }
+  const t = boot({ extra: { AERIAL_PROBE_URL: 'http://lan:8090', Image: Img } });
+  t.ctx.realTelemetryProbe = vm.runInContext('telemetryProbe', t.ctx);
+  vm.runInContext('telemetryProbe()', t.ctx);
+  vm.runInContext("telemetryProbe('a=1')", t.ctx);
+  assert.ok(/^http:\/\/lan:8090\/aerial-probe\.gif\?t=\d+$/.test(sent[0]), sent[0]);
+  assert.strictEqual(sent[1], 'http://lan:8090/aerial-probe.gif?a=1');
+  const none = boot();
+  vm.runInContext('telemetryProbe()', none.ctx);
+}
+
+{
+  const t = boot({ extra: { Image: function () { throw new Error('no img'); }, AERIAL_PROBE_URL: 'http://lan:8090' } });
+  vm.runInContext('telemetryProbe()', t.ctx);
+}
+
+{
+  const requests = [];
+  function Xhr() { requests.push(this); this.open = (m, u) => { this.method = m; this.url = u; }; this.send = () => {}; }
+  const t = boot({ extra: { XMLHttpRequest: Xhr, prompt: () => 'http://new:1', alert: m => alerts.push(m) } });
+  const alerts = [];
+  const item = "{ key: 'customServerUrl' }";
+  vm.runInContext("menuChangeText(" + item + ", 'http://old')", t.ctx);
+  assert.strictEqual(requests[0].method, 'HEAD');
+  assert.ok(/^http:\/\/new:1\//.test(requests[0].url), requests[0].url);
+  requests[0].status = 200;
+  requests[0].onload();
+  assert.strictEqual(vm.runInContext('settings.customServerUrl', t.ctx), 'http://new:1', 'a reachable server is saved');
+  vm.runInContext("menuChangeText(" + item + ", 'http://old')", t.ctx);
+  requests[1].status = 500;
+  requests[1].onload();
+  assert.strictEqual(alerts.length, 1, 'an error status is refused');
+  vm.runInContext("menuChangeText(" + item + ", 'http://old')", t.ctx);
+  requests[2].onerror();
+  vm.runInContext("menuChangeText(" + item + ", 'http://old')", t.ctx);
+  requests[3].ontimeout();
+  assert.strictEqual(alerts.length, 3, 'errors and timeouts are refused');
+  assert.strictEqual(vm.runInContext('settings.customServerUrl', t.ctx), 'http://new:1', 'a refused URL never replaces the saved one');
+}
+
+{
+  const results = [];
+  function Xhr() { this.open = () => { throw new Error('bad url'); }; }
+  const t = boot({ extra: { XMLHttpRequest: Xhr } });
+  t.ctx.report = ok => results.push(ok);
+  vm.runInContext('testConnection("http://x", report)', t.ctx);
+  assert.deepStrictEqual(results, [false], 'a throwing request reads as unreachable');
+  const quiet = boot({ extra: { prompt: () => '' } });
+  vm.runInContext("menuChangeText({ key: 'customServerUrl' }, 'http://old')", quiet.ctx);
+  assert.strictEqual(vm.runInContext('menuBusyKey', quiet.ctx) || null, null, 'an empty prompt changes nothing');
+}
+
+{
+  const fresh = boot({ main: true, fileContent: null });
+  fresh.finishRead();
+  assert.ok(fresh.events.some(e => e[0] === 'storage_restore_skipped' && e[1].reason === 'no file'), 'a first run restores nothing');
+}
+
+{
+  const t = boot({ main: true, fileContent: '{}' });
+  vm.runInContext('settingsTouched = true', t.ctx);
+  t.finishRead();
+  assert.ok(t.events.some(e => e[0] === 'storage_restore_skipped' && e[1].reason === 'viewer already navigated'), 'a viewer who already acted wins over the file');
+}
+
+{
+  const t2 = boot({ main: true, fileContent: JSON.stringify({ aerial_settings: JSON.stringify({ videoOrder: 'sequential' }) }) });
+  vm.runInContext('startupIndex = videoIndex', t2.ctx);
+  t2.finishRead();
+  assert.strictEqual(vm.runInContext('settings.videoOrder', t2.ctx), 'sequential', 'settings saved on disk are restored');
+  const same = boot({ main: true, fileContent: '{}' });
+  vm.runInContext('startupIndex = videoIndex', same.ctx);
+  same.finishRead();
+  assert.ok(same.events.some(e => e[0] === 'storage_restored'), 'a file without a saved video still reports');
+}
+
+{
+  const urls = [];
+  const sent = [];
+  function Xhr() { this.open = (m, u) => urls.push(u); this.setRequestHeader = () => {}; this.send = b => sent.push(b); }
+  const beacon = [];
+  const t = boot({ extra: { XMLHttpRequest: Xhr, navigator: { sendBeacon: (u, b) => { beacon.push(u); return true; } }, AERIAL_TELEMETRY: { clientToken: 'tok', site: 'datadoghq.eu' } } });
+  t.ctx.realTelemetry('e', {});
+  vm.runInContext('telemetryFlush()', t.ctx);
+  assert.ok(/^https:\/\/browser-intake-datadoghq\.eu\/api\/v2\/logs\?dd-api-key=tok/.test(beacon[0]), 'a regional site gets its own intake: ' + beacon[0]);
+  assert.strictEqual(sent.length, 0, 'a beacon that works needs no XHR');
+  t.ctx.navigator.sendBeacon = () => false;
+  t.ctx.realTelemetry('e', {});
+  vm.runInContext('telemetryFlush()', t.ctx);
+  assert.strictEqual(sent.length, 1, 'a refused beacon falls back to XHR');
+  t.ctx.navigator.sendBeacon = () => { throw new Error('x'); };
+  t.ctx.realTelemetry('e', {});
+  vm.runInContext('telemetryFlush()', t.ctx);
+  assert.strictEqual(sent.length, 2, 'a throwing beacon falls back to XHR');
+  t.ctx.XMLHttpRequest = function () { throw new Error('x'); };
+  t.ctx.realTelemetry('e', {});
+  vm.runInContext('telemetryFlush()', t.ctx);
+  const plain = boot({ extra: { navigator: {}, XMLHttpRequest: Xhr, AERIAL_TELEMETRY: { clientToken: 'tok' } } });
+  plain.ctx.realTelemetry('e', {});
+  vm.runInContext('telemetryFlush()', plain.ctx);
+  assert.ok(/browser-intake-datadoghq\.com/.test(urls[urls.length - 1]), 'the default site is datadoghq.com');
+}
+
+assert.throws(() => boot({ main: true, extra: { CATALOG: [] } }), /CATALOG is empty/, 'an empty catalog must stop the app loudly');
 
 console.log('player tests passed');
