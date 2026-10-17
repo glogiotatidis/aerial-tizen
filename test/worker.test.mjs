@@ -11,7 +11,7 @@ const upstream = async (url, init) => {
   });
 };
 const handle = makeHandler(upstream);
-const PAGE = 'https://jeancarlos.github.io';
+const PAGE = 'https://aerial.jeansouza.dev';
 const FILE = 'https://p.example/Videos/AK_A004_C012_SDR_20191217_SDR_2K_AVC.mov';
 const ask = (url, headers, method) => handle(new Request(url, { method: method || 'GET', headers }));
 

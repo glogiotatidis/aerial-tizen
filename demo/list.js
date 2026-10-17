@@ -28,12 +28,17 @@ function buildCatalogList(catalog, doc, onPlay) {
       link.setAttribute('href', video.url);
       link.setAttribute('target', '_blank');
       link.setAttribute('rel', 'noopener noreferrer');
+      var thumb = doc.createElement('img');
+      thumb.setAttribute('src', 'preload/' + video.url.slice(video.url.lastIndexOf('/') + 1).replace(/\.(mov|mp4)$/, '.webp'));
+      thumb.setAttribute('alt', '');
+      thumb.setAttribute('loading', 'lazy');
       var text = doc.createElement('span');
       text.textContent = video.description;
       row.searchText = (video.label + ' ' + video.description).toLowerCase();
       row.appendChild(play);
       row.appendChild(link);
       row.appendChild(text);
+      row.appendChild(thumb);
       root.appendChild(row);
     });
   });
