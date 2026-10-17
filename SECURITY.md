@@ -12,6 +12,10 @@ Include the affected file or version, the steps to reproduce, and the impact you
 - A fix or a written assessment within 30 days.
 - Coordinated disclosure: please wait for a fix, or 90 days from your report, before publishing details.
 
+## Published vulnerabilities
+
+Confirmed vulnerabilities are published as GitHub security advisories at <https://github.com/jeancarlos/aerial-tizen/security/advisories>, with the affected versions, the fix and credit to the reporter. None have been reported so far. The release notes in [CHANGELOG.md](CHANGELOG.md) name security fixes.
+
 ## Scope
 
 The app code in `js/`, the deploy scripts and the CI workflows. The Apple CDN, Samsung's AVPlay and the Tizen SDK are out of scope: report those upstream.

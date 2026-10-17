@@ -68,6 +68,10 @@ Never commit `js/local-config.js`. It holds your LAN address and, if you use tel
 - Include the test that would have caught the bug you fixed.
 - No AI-generated prose in documentation without saying so.
 
+## Sign your commits
+
+Every commit needs a `Signed-off-by: Your Name <you@example.com>` line, which you add with `git commit -s`. It states the [Developer Certificate of Origin](https://developercertificate.org/): you wrote the change or have the right to submit it under the project's MIT licence. The `dco` check fails a pull request that has an unsigned commit.
+
 ## Reporting a video that does not play
 
 Useful reports name the video and the failure. Both are on the on-screen debug board:
