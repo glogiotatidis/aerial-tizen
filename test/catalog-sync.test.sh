@@ -93,8 +93,8 @@ echo "Thumbnail checks:"
 msg="No file under preload/ is tracked by git"
 check [ -z "$(git -C "$ROOT" ls-files preload)" ]
 
-msg="The only tracked images are the icon and the demo's own gradients"
-stray=$(git -C "$ROOT" ls-files '*.png' '*.jpg' '*.jpeg' '*.webp' '*.gif' '*.mov' '*.mp4' | grep -vxE 'icon\.png|demo/tint/[a-z]+\.webp' || true)
+msg="The only tracked images are the icon, the screenshot and the demo's own gradients"
+stray=$(git -C "$ROOT" ls-files '*.png' '*.jpg' '*.jpeg' '*.webp' '*.gif' '*.mov' '*.mp4' | grep -vxE 'icon\.png|docs/screenshot\.png|demo/tint/[a-z]+\.webp' || true)
 check [ -z "$stray" ]
 
 msg="preload/ is gitignored"
