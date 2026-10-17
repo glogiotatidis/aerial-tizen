@@ -29,6 +29,9 @@ check [ -z "$(find "$OUT/site/preload" -type f -size +200k)" ]
 msg="The demo page loads the list script it ships"
 check grep -q 'src="list.js"' "$OUT/site/index.html"
 
+msg="The demo page carries no stills-only disclaimer"
+check [ -z "$(grep -c sim-note "$OUT/site/index.html" | grep -v "^0$")" ]
+
 msg="The demo ships the list and key scripts"
 check [ -s "$OUT/site/list.js" -a -s "$OUT/site/keys.js" -a -s "$OUT/site/proxy.js" -a -s "$OUT/site/config.js" ]
 

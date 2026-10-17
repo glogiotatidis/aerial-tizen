@@ -22,22 +22,6 @@
       object-fit: cover;
       z-index: 1;
     }
-    #sim-note {
-      display: none;
-      position: fixed;
-      right: 16px;
-      bottom: 16px;
-      z-index: 30;
-      max-width: 520px;
-      background: rgba(0, 0, 0, 0.7);
-      color: rgba(255, 255, 255, 0.55);
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, sans-serif;
-      font-size: 13px;
-      line-height: 1.5;
-      padding: 10px 14px;
-      border-radius: 8px;
-      text-align: right;
-    }
     #gh-ribbon {
       position: fixed;
       top: 40px;
@@ -142,11 +126,6 @@
     <div id="menu-items"></div>
     <div id="menu-hint">ESC to close</div>
   </div>
-  <div id="sim-note">
-    Stills from each video, not the video itself. Apple serves the aerials over plain http and signs
-    https with a private CA, so a page served over https can load neither.
-    Everything else here is the app the TV runs.
-  </div>
   <div id="catalog-list"></div>
   <button id="catalog-button" type="button" onclick="toggleCatalogList()">All videos (L)</button>
   <a id="gh-ribbon" href="https://github.com/jeancarlos/aerial-tizen" target="_blank" rel="noopener">See on GitHub</a>
@@ -184,8 +163,6 @@
   // nothing on the network.
   var SIM_STILLS = (location.protocol === 'https:' && !DEMO_PROXY) || /[?&]stills\b/.test(location.search);
   var STILL_CLIP_MS = 8000;
-
-  if (SIM_STILLS) document.getElementById('sim-note').style.display = 'block';
 
   function toBrowserUrl(url) {
     return simProxyUrl((typeof H264_MAP !== 'undefined' && H264_MAP[url]) || url, location.protocol === 'https:' ? DEMO_PROXY : '');
