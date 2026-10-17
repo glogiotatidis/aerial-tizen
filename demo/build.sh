@@ -14,6 +14,7 @@ rm -rf "$OUT"
 mkdir -p "$OUT"
 cp -r "$DIR/css" "$DIR/js" "$OUT/"
 cp "$DIR/simulate.html" "$OUT/index.html"
+cp "$DIR/demo/list.js" "$OUT/list.js"
 
 # The real thumbnails are Apple's footage and are not in the repository, so the
 # demo uses its own: one gradient per category, under every video's file name.
