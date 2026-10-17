@@ -13,6 +13,10 @@ echo "== storage =="
 if node "$DIR/storage.test.js"; then :; else failed=1; fi
 
 echo
+echo "== demo list =="
+if node "$DIR/list.test.js"; then :; else failed=1; fi
+
+echo
 echo "== catalog data =="
 if bash "$DIR/catalog-sync.test.sh"; then :; else failed=1; fi
 
