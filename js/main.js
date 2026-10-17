@@ -36,39 +36,41 @@ function handleMenuKey(keyCode) {
   }
 }
 
+function togglePause() {
+  try {
+    var state = avplay.getState();
+    if (state === 'PLAYING') avplay.pause();
+    else if (state === 'PAUSED') avplay.play();
+  } catch (err) {}
+}
+
+function skipVideo() {
+  playVideo(takeNext());
+}
+
+function exitApp() {
+  stopPlayback();
+  try { tizen.application.getCurrentApplication().exit(); } catch (err) {}
+}
+
+var PLAYER_KEYS = {
+  // 0 shows the event log, which is the only view into the TV
+  48: function () { if (settings.devMode) debugToggle(); },
+  13: openMenu,
+  10252: togglePause,
+  415: function () { try { avplay.play(); } catch (err) {} },
+  19: function () { try { avplay.pause(); } catch (err) {} },
+  417: skipVideo,
+  39: skipVideo,
+  427: skipVideo,
+  428: skipVideo,
+  413: exitApp,
+  10009: exitApp
+};
+
 function handlePlayerKey(keyCode) {
-  switch (keyCode) {
-    case 48: // 0 shows the event log, which is the only view into the TV
-      if (settings.devMode) debugToggle();
-      break;
-    case 13: // Enter
-      openMenu();
-      break;
-    case 10252: // PlayPause
-      try {
-        var state = avplay.getState();
-        if (state === 'PLAYING') avplay.pause();
-        else if (state === 'PAUSED') avplay.play();
-      } catch (err) {}
-      break;
-    case 415: // Play
-      try { avplay.play(); } catch (err) {}
-      break;
-    case 19: // Pause
-      try { avplay.pause(); } catch (err) {}
-      break;
-    case 417: // FastForward
-    case 39:  // Right
-    case 427: // ChannelUp
-    case 428: // ChannelDown
-      playVideo(takeNext());
-      break;
-    case 413:   // Stop
-    case 10009: // Back
-      stopPlayback();
-      try { tizen.application.getCurrentApplication().exit(); } catch (err) {}
-      break;
-  }
+  var action = PLAYER_KEYS[keyCode];
+  if (action) action();
 }
 
 document.addEventListener('keydown', function (e) {
