@@ -55,11 +55,15 @@
     #catalog-list {
       display: none;
       position: fixed;
-      inset: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: min(440px, 100%);
+      box-sizing: border-box;
       z-index: 44;
       overflow-y: auto;
-      padding: 56px max(24px, 15%) 72px;
-      background: rgba(0, 0, 0, 0.88);
+      padding: 24px 20px 72px;
+      background: rgba(0, 0, 0, 0.82);
       color: rgba(255, 255, 255, 0.8);
       font: 15px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, sans-serif;
     }
