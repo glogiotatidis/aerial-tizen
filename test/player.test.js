@@ -547,6 +547,14 @@ const { PRELOAD_FADE_MS, BUFFER_TIMEOUT_MS, RETRY_DELAYS_MS, ERROR_SKIP_MS, MAX_
 
 {
   const t = boot();
+  vm.runInContext("storageSet('aerial_settings', JSON.stringify({ videoOrder: 'backwards', menuTheme: 'neon', showDescription: false })); loadSettings();", t.ctx);
+  assert.strictEqual(t.ctx.settings.videoOrder, 'shuffle', 'a stored order the menu does not offer must fall back to the default');
+  assert.strictEqual(t.ctx.settings.menuTheme, 'dark', 'a stored theme the menu does not offer must fall back to the default');
+  assert.strictEqual(t.ctx.settings.showDescription, false, 'a valid stored value must survive');
+}
+
+{
+  const t = boot();
   vm.runInContext("loadSettings(); menuIndex = getVisibleMenuItems().findIndex(function (i) { return i.key === 'menuTheme'; }); menuChangeValue(1);", t.ctx);
   assert.strictEqual(t.ctx.settings.menuTheme, 'light', 'the menu theme toggle must switch dark to light');
   assert.ok(t.ctx.menuEl.classList.contains('light'), 'the light theme must put the light class on the menu');
