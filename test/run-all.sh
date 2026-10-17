@@ -17,6 +17,10 @@ echo "== storage =="
 if node "$DIR/storage.test.js"; then :; else failed=1; fi
 
 echo
+echo "== demo mocks =="
+if node "$DIR/avplay.test.js"; then :; else failed=1; fi
+
+echo
 echo "== demo list =="
 if node "$DIR/list.test.js"; then :; else failed=1; fi
 

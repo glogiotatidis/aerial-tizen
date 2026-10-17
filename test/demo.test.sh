@@ -36,25 +36,44 @@ msg="The demo ships the list and key scripts"
 check [ -s "$OUT/site/list.js" -a -s "$OUT/site/keys.js" -a -s "$OUT/site/proxy.js" -a -s "$OUT/site/config.js" ]
 
 msg="The demo thumbnail fills the viewport like the video does"
-check grep -Pzoq '#preload \{[^}]*width: calc\(100% \+ 4px\);\s*height: calc\(100% \+ 4px\);' "$OUT/site/index.html"
+check grep -Pzoq '#preload \{[^}]*width: calc\(100% \+ 4px\);\s*height: calc\(100% \+ 4px\);' "$OUT/site/sim.css"
 
 msg="The demo video starts at the second the thumbnail is cut from"
-check grep -q "toBrowserUrl(url) + '#t=1'" "$OUT/site/index.html"
+check grep -q "urlFor(url) + '#t=1'" "$OUT/site/avplay.js"
 
 msg="Backdrop blur sits on the blur class only, never on the base menu"
 check sh -c 'grep -Pzoq "#menu\.blur \{[^}]*backdrop-filter" "$1" && ! grep -Pzoq "#menu \{[^}]*backdrop-filter" "$1"' _ "$ROOT/css/style.css"
 
 msg="The list header is opaque so scrolled rows cannot show through it"
-check grep -q "#catalog-list h2 {[^}]*background: rgb(" "$OUT/site/index.html"
+check grep -q "#catalog-list h2 {[^}]*background: rgb(" "$OUT/site/sim.css"
 
 msg="The video list expands with a transition instead of popping in"
-check grep -q "#catalog-list.open { visibility: visible; opacity: 1; transform: none; transition" "$OUT/site/index.html"
+check grep -q "#catalog-list.open { visibility: visible; opacity: 1; transform: none; transition" "$OUT/site/sim.css"
 
 msg="The demo video offers no picture-in-picture button"
 check grep -q '<video id="sim-video" muted disablepictureinpicture' "$OUT/site/index.html"
 
 msg="The demo page loads the key script"
 check grep -q 'src="keys.js"' "$OUT/site/index.html"
+
+msg="Every element id of the app page is in the demo page, except the TV player"
+app_ids=$(grep -o ' id="[^"]*"' "$ROOT/index.html" | grep -v 'id="player"' | sort -u)
+demo_ids=$(grep -o ' id="[^"]*"' "$OUT/site/index.html" | sort -u)
+check [ -z "$(comm -23 <(echo "$app_ids") <(echo "$demo_ids"))" ]
+
+msg="The demo page is the app page with no TV-only leftovers"
+check [ -z "$(grep -E 'WEBAPIS|avplayer' "$OUT/site/index.html")" ]
+
+msg="Every script the app page loads is in the demo page, in the same order"
+app_js=$(grep -o 'src="js/[^"]*"' "$ROOT/index.html")
+demo_js=$(grep -o 'src="js/[^"]*"' "$OUT/site/index.html" | grep -v h264map)
+check [ "$app_js" = "$demo_js" ]
+
+msg="The demo mocks load before the app scripts"
+check [ "$(grep -n 'src="boot.js"' "$OUT/site/index.html" | cut -d: -f1)" -lt "$(grep -n 'src="js/main.js"' "$OUT/site/index.html" | cut -d: -f1)" ]
+
+msg="The demo menu hint names the keyboard key"
+check grep -q 'ESC to close' "$OUT/site/index.html"
 
 msg="The file server home page lists live files"
 check grep -q "fetch('files.json')" "$ROOT/server/index.html"
