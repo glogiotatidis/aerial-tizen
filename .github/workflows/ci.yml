@@ -19,6 +19,12 @@ jobs:
       - run: npm ci --ignore-scripts
       - name: tests with the 90% coverage gate
         run: npm run coverage
+      - name: coverage percent
+        run: node -p "require('./coverage/coverage-summary.json').total.lines.pct" > percent.txt
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: coverage-percent
+          path: percent.txt
       - name: fuzz settings
         run: npm run fuzz
   reuse:

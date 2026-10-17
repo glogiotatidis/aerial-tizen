@@ -14,7 +14,7 @@ There are no other collaborators. Adding one is the maintainer's decision, and a
 
 - **Maintainer:** reviews and merges every pull request, cuts releases, answers security reports within the times in [SECURITY.md](SECURITY.md), and keeps the rulesets and required checks in place.
 - **Contributor:** anyone who opens an issue or a pull request, following [CONTRIBUTING.md](CONTRIBUTING.md).
-- **Automation:** promotes `develop` to `main` after CI passes, merges patch and minor Dependabot updates after CI passes, and builds and signs releases from a version tag.
+- **Automation:** opens the `develop` to `main` release PR after CI passes (the maintainer merges it), publishes the coverage badge, merges patch and minor Dependabot updates after CI passes, and builds and signs releases from a version tag.
 
 ## How changes are decided
 

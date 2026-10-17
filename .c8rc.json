@@ -3,7 +3,7 @@
   "src": ["js"],
   "include": ["js/*.js"],
   "exclude": ["js/catalog.js", "js/h264map.js", "js/local-config.example.js"],
-  "reporter": ["text"],
+  "reporter": ["text", "json-summary"],
   "check-coverage": true,
   "lines": 90,
   "statements": 90,
