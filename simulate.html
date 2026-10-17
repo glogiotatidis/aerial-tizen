@@ -61,7 +61,11 @@
     }
     #catalog-button:hover { background: rgba(255, 255, 255, 0.2); }
     #catalog-list {
-      display: none;
+      visibility: hidden;
+      opacity: 0;
+      transform: translateX(24px) scale(0.96);
+      transform-origin: bottom right;
+      transition: opacity 0.25s ease, transform 0.25s ease, visibility 0s linear 0.25s;
       position: fixed;
       top: 12px;
       right: 12px;
@@ -83,12 +87,12 @@
       scrollbar-width: thin;
       scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
     }
-    #catalog-list.open { display: block; }
+    #catalog-list.open { visibility: visible; opacity: 1; transform: none; transition: opacity 0.25s ease, transform 0.25s ease; }
     #catalog-list.open ~ #catalog-button { right: calc(min(440px, 100% - 24px) + 28px); }
     #catalog-list input { width: 100%; box-sizing: border-box; padding: 11px 16px; border: 1px solid rgba(255, 255, 255, 0.18); border-radius: 12px; background: rgba(255, 255, 255, 0.1); color: #fff; font: inherit; outline: none; }
     #catalog-list input:focus { border-color: rgba(138, 180, 255, 0.8); background: rgba(255, 255, 255, 0.14); }
     #catalog-list input::placeholder { color: rgba(255, 255, 255, 0.5); }
-    #catalog-list h2 { position: sticky; top: -16px; z-index: 1; margin: 18px -14px 8px; padding: 10px 14px; font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255, 255, 255, 0.75); background: rgba(16, 20, 32, 0.45); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
+    #catalog-list h2 { position: sticky; top: -16px; z-index: 1; margin: 18px -14px 8px; padding: 10px 14px; font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255, 255, 255, 0.75); background: rgb(24, 30, 46); }
     #catalog-list div div { display: grid; grid-template-columns: 96px 1fr auto; grid-template-areas: "thumb title play" "thumb desc play"; column-gap: 12px; row-gap: 2px; align-items: center; margin-bottom: 8px; padding: 8px; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 14px; background: rgba(255, 255, 255, 0.06); }
     #catalog-list div div:hover { background: rgba(255, 255, 255, 0.12); border-color: rgba(255, 255, 255, 0.2); }
     #catalog-list div div[hidden] { display: none; }
