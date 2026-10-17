@@ -14,4 +14,5 @@ check "ci uploads the coverage percent" has ci.yml 'name: coverage-percent'
 check "badge publishes to the badges branch" has badge.yml 'HEAD:badges'
 check "badge only runs after ci on main" has badge.yml 'branches: [main]'
 check "c8 writes the json summary" grep -q json-summary "$ROOT/.c8rc.json"
+check "zizmor ignores the badge trigger" grep -qF "badge.yml:3" "$ROOT/.github/zizmor.yml"
 exit "$fails"
