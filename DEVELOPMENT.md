@@ -11,7 +11,7 @@ python3 -m http.server 8080
 # open http://localhost:8080/simulate.html
 ```
 
-Over plain http it plays the browser-decodable H.264 1080p variant of each video. Over https it cannot: Apple serves the aerials from `sylvan.apple.com` over http only, and signs that host with a private Apple CA no browser trusts, so an https page can load neither scheme. On https the simulator falls back to the catalog's placeholder frames, which is what the [published demo](https://jeancarlos.github.io/aerial-tizen/) shows. Append `?stills` to see that mode locally.
+Over plain http it plays the browser-decodable H.264 1080p variant of each video. Over https it cannot: Apple serves the aerials from `sylvan.apple.com` over http only, and signs that host with a private Apple CA no browser trusts, so an https page can load neither scheme. On https the simulator falls back to a still frame of each video (committed under `demo/assets/thumbs`, regenerate with `bash tools/make-thumbs.sh --demo`), which is what the [published demo](https://jeancarlos.github.io/aerial-tizen/) shows. Append `?stills` to see that mode locally.
 
 | Key | Action |
 |---|---|
@@ -125,6 +125,6 @@ bash test/run-all.sh
 | `test/player.test.js` | Stale-work cancellation, the retry ladder, the watchdog, category restarts, settings clamping and persistence |
 | `test/catalog-sync.test.sh` | Missing thumbnails, thumbnails no catalog entry claims, stray `.jpg` files, URL uniqueness and scheme, h264 map consistency including orphan keys |
 
-The player suite loads the real scripts into a `vm` context with stubbed Samsung APIs and a virtual clock. `advance(ms)` fires whatever is due, in due order, so a test states the delay it is waiting for — a fade, the watchdog, a retry — instead of counting how many timers happen to exist. Adding a `setTimeout` somewhere in the player no longer breaks unrelated tests.
+The player suite loads the real scripts into a `vm` context with stubbed Samsung APIs and a virtual clock. `advance(ms)` fires whatever is due, in due order, so a test states the delay it is waiting for - a fade, the watchdog, a retry - instead of counting how many timers happen to exist. Adding a `setTimeout` somewhere in the player no longer breaks unrelated tests.
 
 Write tests that fail when the behaviour is deleted, and prove it: remove the implementation line your test covers, run the suite, confirm it goes red, put the line back.
