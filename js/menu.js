@@ -55,6 +55,8 @@ function createMenuItemEl(item, isActive) {
 }
 
 function renderMenu() {
+  if (settings.menuTheme === 'light') menuEl.classList.add('light');
+  else menuEl.classList.remove('light');
   var visible = getVisibleMenuItems();
   menuIndex = Math.min(menuIndex, visible.length - 1);
   menuItemsEl.textContent = '';

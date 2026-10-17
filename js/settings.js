@@ -4,6 +4,7 @@ var DEFAULT_SETTINGS = {
   showDescription: true,
   descriptionTimer: 3,
   videoOrder: 'shuffle',
+  menuTheme: 'dark',
   category: 'all',
   customServerEnabled: !!LOCAL_SERVER,
   customServerUrl: LOCAL_SERVER || 'http://192.168.0.100:8090',
@@ -58,6 +59,15 @@ var MENU_ITEMS = [
     options: [
       { value: 'shuffle', label: 'Shuffle' },
       { value: 'sequential', label: 'Sequential' }
+    ]
+  },
+  {
+    key: 'menuTheme',
+    label: 'Menu Theme',
+    type: 'toggle',
+    options: [
+      { value: 'dark', label: 'Dark' },
+      { value: 'light', label: 'Light' }
     ]
   },
   {

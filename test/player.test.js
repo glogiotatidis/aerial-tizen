@@ -537,6 +537,15 @@ const { PRELOAD_FADE_MS, BUFFER_TIMEOUT_MS, RETRY_DELAYS_MS, ERROR_SKIP_MS, MAX_
 
 {
   const t = boot();
+  vm.runInContext("loadSettings(); menuIndex = getVisibleMenuItems().findIndex(function (i) { return i.key === 'menuTheme'; }); menuChangeValue(1);", t.ctx);
+  assert.strictEqual(t.ctx.settings.menuTheme, 'light', 'the menu theme toggle must switch dark to light');
+  assert.ok(t.ctx.menuEl.classList.contains('light'), 'the light theme must put the light class on the menu');
+  vm.runInContext("menuChangeValue(1);", t.ctx);
+  assert.ok(!t.ctx.menuEl.classList.contains('light'), 'switching back to dark must drop the light class');
+}
+
+{
+  const t = boot();
   vm.runInContext("loadSettings(); menuIndex = getVisibleMenuItems().findIndex(function (i) { return i.key === 'videoOrder'; }); settings.videoOrder = 'sequential'; menuChangeValue(1);", t.ctx);
   assert.strictEqual(t.ctx.settings.videoOrder, 'shuffle', 'a toggle past its last option must wrap to the first');
   vm.runInContext("menuChangeValue(-1);", t.ctx);
