@@ -20,7 +20,7 @@ function node(tag) {
 const panel = node('div');
 const ctx = { document: { createElement: node, getElementById: () => panel } };
 vm.createContext(ctx);
-for (const f of ['../js/catalog.js', '../demo/list.js', '../demo/keys.js']) {
+for (const f of ['../js/catalog.js', '../demo/list.js', '../demo/keys.js', '../demo/proxy.js']) {
   vm.runInContext(fs.readFileSync(path.join(__dirname, f), 'utf8'), ctx);
 }
 const catalog = vm.runInContext('CATALOG', ctx);
@@ -91,5 +91,11 @@ assert.strictEqual(act(13, 'BODY', true), 'swallow', 'Enter must not open the me
 assert.strictEqual(act(76, 'INPUT', true), 'swallow', 'typing an L in the filter must not close the list');
 assert.strictEqual(act(32, 'INPUT', true), 'swallow', 'typing a space must not pause the video');
 assert.strictEqual(act(27, 'INPUT', true), 'close-list');
+
+const asset = 'http://sylvan.apple.com/Videos/a_2K_AVC.mov';
+assert.strictEqual(ctx.simProxyUrl(asset, ''), asset, 'without a proxy the URL is untouched');
+assert.strictEqual(ctx.simProxyUrl(asset, 'https://p.example'), 'https://p.example/Videos/a_2K_AVC.mov');
+assert.strictEqual(ctx.simProxyUrl(asset, 'https://p.example/'), 'https://p.example/Videos/a_2K_AVC.mov', 'a trailing slash does not double up');
+assert.strictEqual(ctx.simProxyUrl('http://other.example/a.mov', 'https://p.example'), 'http://other.example/a.mov', 'other hosts are never proxied');
 
 console.log('list tests passed');

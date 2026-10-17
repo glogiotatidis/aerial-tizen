@@ -166,6 +166,8 @@
   <script src="js/h264map.js"></script>
   <script src="list.js"></script>
   <script src="keys.js"></script>
+  <script src="proxy.js"></script>
+  <script src="config.js"></script>
   <script>
   // ── Mock Samsung APIs ──
   // Wraps HTML5 <video> to match AVPlay interface
@@ -180,13 +182,13 @@
   // https can never load them. On https - GitHub Pages - the demo plays the
   // catalog's thumbnails instead, which exercises the same state machine with
   // nothing on the network.
-  var SIM_STILLS = location.protocol === 'https:' || /[?&]stills\b/.test(location.search);
+  var SIM_STILLS = (location.protocol === 'https:' && !DEMO_PROXY) || /[?&]stills\b/.test(location.search);
   var STILL_CLIP_MS = 8000;
 
   if (SIM_STILLS) document.getElementById('sim-note').style.display = 'block';
 
   function toBrowserUrl(url) {
-    return (typeof H264_MAP !== 'undefined' && H264_MAP[url]) || url;
+    return simProxyUrl((typeof H264_MAP !== 'undefined' && H264_MAP[url]) || url, location.protocol === 'https:' ? DEMO_PROXY : '');
   }
 
   var videoAvplay = {
