@@ -8,8 +8,9 @@ check "dependabot-merge selects the PR from the run" has dependabot-merge.yml 'p
 check "dependabot-merge verifies the author" has dependabot-merge.yml 'app/dependabot develop false'
 check "dependabot-merge dispatches security" has dependabot-merge.yml 'gh workflow run security.yml --ref develop'
 check "promote waits for test reuse zizmor" has promote.yml 'for name in test reuse zizmor'
-check "promote never merges" bash -c "! grep -q 'gh pr merge' '$ROOT/.github/workflows/promote.yml'"
-check "promote leaves the merge to the maintainer" has promote.yml 'merge it by hand'
+check "promote only enables auto-merge" has promote.yml 'gh pr merge "$pr" --auto --merge --match-head-commit "$SHA"'
+check "promote tells the maintainer to approve" has promote.yml 'merges when you approve it'
+check "code owner is the maintainer" grep -qx '\* @jeancarlos' "$ROOT/.github/CODEOWNERS"
 check "ci uploads the coverage percent" has ci.yml 'name: coverage-percent'
 check "badge publishes to the badges branch" has badge.yml 'HEAD:badges'
 check "badge only runs after ci on main" has badge.yml 'branches: [main]'
