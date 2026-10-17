@@ -12,7 +12,7 @@
 | Maintainer | Cuts thumbnails with `tools/make-thumbs.sh` | `tools/` |
 | CI | Runs tests, coverage, fuzzing, REUSE, CodeQL, gitleaks, osv-scanner, zizmor, Scorecard | `.github/workflows/` |
 | CI | Promotes `develop` to `main`, merges safe Dependabot updates, deploys the demo, signs releases | `.github/workflows/` |
-| Browser visitor | Runs the demo, lists the catalog, plays a video through the optional proxy | `simulate.html`, `demo/`, `worker/` |
+| Browser visitor | Runs the demo, lists the catalog, plays a video through the optional proxy | `demo/`, `worker/` |
 | Proxy Worker | Re-serves Apple's video over https to the demo origin | `worker/index.mjs` |
 
 ## External interfaces
