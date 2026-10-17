@@ -16,12 +16,11 @@ jobs:
         run: |
           for f in js/*.js test/*.js; do node --check "$f"; done
           for f in *.sh demo/*.sh test/*.sh tools/*.sh; do bash -n "$f"; done
-      - name: tests
-        run: bash test/run-all.sh
+      - run: npm ci --ignore-scripts
+      - name: tests with the 90% coverage gate
+        run: npm run coverage
       - name: fuzz settings
-        run: |
-          npm ci --ignore-scripts
-          npm run fuzz
+        run: npm run fuzz
   reuse:
     runs-on: ubuntu-latest
     steps:

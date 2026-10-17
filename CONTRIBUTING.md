@@ -8,7 +8,7 @@ Thanks for wanting to help. This is a small app with unusual constraints, and mo
 
 **ES5-era syntax only.** Tizen 6.0 runs Chromium 76. No arrow functions, `let`/`const`, template literals, spread, classes or `async`/`await` in `js/`. `simulate.html` is desktop-only and may use anything.
 
-**CSS that Chromium 76 understands.** `inset` and flexbox `gap` are both too new and will silently do nothing on the TV — a mistake that already shipped once and made the fade overlay zero-sized.
+**CSS that Chromium 76 understands.** `inset` and flexbox `gap` are both too new and will silently do nothing on the TV - a mistake that already shipped once and made the fade overlay zero-sized.
 
 **Less code wins.** A patch that deletes something and keeps the behaviour is better than one that adds an abstraction for a single case.
 
@@ -30,11 +30,11 @@ python3 -m http.server 8080
 
 Do not hand-edit these; a regeneration overwrites them:
 
-- `js/catalog.js` — the video list
-- `js/h264map.js` — the browser-playable URL per video, used only by the simulator
-- `preload/*.webp` — one thumbnail per video, extracted from its own first seconds
+- `js/catalog.js` - the video list
+- `js/h264map.js` - the browser-playable URL per video, used only by the simulator
+- `preload/*.webp` - one thumbnail per video, extracted from its own first seconds
 
-They come from a separate generator that verifies every link against Apple's CDN and refuses to list a video that does not play. If you want to add or remove videos, open an issue describing what changed upstream rather than editing the list — a hand-edit will be reverted by the next regeneration, and the invariants in `test/catalog-sync.test.sh` will usually catch it first.
+They come from a separate generator that verifies every link against Apple's CDN and refuses to list a video that does not play. If you want to add or remove videos, open an issue describing what changed upstream rather than editing the list - a hand-edit will be reverted by the next regeneration, and the invariants in `test/catalog-sync.test.sh` will usually catch it first.
 
 ## Tests
 
@@ -42,7 +42,10 @@ Both suites must be green:
 
 ```bash
 ./test/run-all.sh
+npm ci && npm run coverage
 ```
+
+`npm run coverage` runs the same suites under c8 and fails below 90% of statements, branches, functions and lines in `js/`. The catalog and the other data files are checked by `test/catalog-sync.test.sh` and left out of the measure.
 
 `test/player.test.js` is a hand-rolled harness: it loads the real player scripts into a VM context with stubbed Samsung APIs and a virtual clock, so timers, retries and the watchdog are deterministic. `advance(ms)` fires whatever is due by then, in due order, so a test names the delay it is waiting for rather than counting timers, and a new `setTimeout` in the player does not disturb unrelated tests.
 
