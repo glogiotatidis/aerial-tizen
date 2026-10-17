@@ -33,6 +33,10 @@ echo "== thumbnails =="
 if bash "$DIR/thumbs.test.sh"; then :; else failed=1; fi
 
 echo
+echo "== deploy scripts =="
+if bash "$DIR/deploy.test.sh"; then :; else failed=1; fi
+
+echo
 echo "== dco =="
 if bash "$DIR/dco.test.sh"; then :; else failed=1; fi
 
