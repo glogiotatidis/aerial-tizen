@@ -1,5 +1,16 @@
 # Aerial for Samsung Tizen TV
 
+[![CI](https://github.com/jeancarlos/aerial-tizen/actions/workflows/ci.yml/badge.svg)](https://github.com/jeancarlos/aerial-tizen/actions/workflows/ci.yml)
+[![Security](https://github.com/jeancarlos/aerial-tizen/actions/workflows/security.yml/badge.svg)](https://github.com/jeancarlos/aerial-tizen/actions/workflows/security.yml)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/jeancarlos/aerial-tizen/badge)](https://scorecard.dev/viewer/?uri=github.com/jeancarlos/aerial-tizen)
+[![Coverage](https://img.shields.io/badge/coverage-%E2%89%A590%25-brightgreen)](.c8rc.json)
+[![Release](https://img.shields.io/github/v/release/jeancarlos/aerial-tizen)](https://github.com/jeancarlos/aerial-tizen/releases/latest)
+[![Demo](https://img.shields.io/badge/demo-live-blue)](https://jeancarlos.github.io/aerial-tizen/)
+[![License: MIT](https://img.shields.io/github/license/jeancarlos/aerial-tizen)](LICENSE)
+[![REUSE compliant](https://img.shields.io/badge/REUSE-compliant-green)](https://reuse.software/)
+[![Tizen 6.0+](https://img.shields.io/badge/Tizen-6.0%2B-1428a0)](#requirements)
+[![Dependencies: none](https://img.shields.io/badge/runtime%20dependencies-none-brightgreen)](package.json)
+
 Apple TV's aerial screensavers, running natively on a Samsung TV. 115 videos streamed from Apple's CDN and decoded in hardware as HEVC 4K through Samsung's AVPlay.
 
 [**Try the demo**](https://jeancarlos.github.io/aerial-tizen/) - the real app in your browser, no TV needed.
