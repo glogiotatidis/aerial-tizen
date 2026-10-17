@@ -128,3 +128,15 @@ bash test/run-all.sh
 The player suite loads the real scripts into a `vm` context with stubbed Samsung APIs and a virtual clock. `advance(ms)` fires whatever is due, in due order, so a test states the delay it is waiting for - a fade, the watchdog, a retry - instead of counting how many timers happen to exist. Adding a `setTimeout` somewhere in the player no longer breaks unrelated tests.
 
 Write tests that fail when the behaviour is deleted, and prove it: remove the implementation line your test covers, run the suite, confirm it goes red, put the line back.
+
+## Real video on the public demo
+
+GitHub Pages is https and Apple's videos are http, so the published demo shows stills. `worker/index.mjs` is a Cloudflare Worker that re-serves Apple's video over https, with Range support so seeking works. It only answers GET, HEAD and OPTIONS, only for `/Videos/*.mov|mp4` and `/Aerials/2x/Videos/*.mov|mp4`, and only when the request comes from the demo's origin, so it cannot be used as an open proxy.
+
+```bash
+cd worker
+npx wrangler login
+npx wrangler deploy
+```
+
+Then put the Worker's address in `demo/config.js` as `DEMO_PROXY`, for example `var DEMO_PROXY = 'https://aerial-proxy.<account>.workers.dev';`, and ship it like any other change. While `DEMO_PROXY` is empty the demo keeps showing stills.
