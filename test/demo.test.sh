@@ -38,6 +38,9 @@ check [ -s "$OUT/site/list.js" -a -s "$OUT/site/keys.js" -a -s "$OUT/site/proxy.
 msg="The demo thumbnail fills the viewport like the video does"
 check grep -Pzoq '#preload \{\s*width: 100%;\s*height: 100%;' "$OUT/site/index.html"
 
+msg="The demo video starts at the second the thumbnail is cut from"
+check grep -q "toBrowserUrl(url) + '#t=1'" "$OUT/site/index.html"
+
 msg="The demo page loads the key script"
 check grep -q 'src="keys.js"' "$OUT/site/index.html"
 

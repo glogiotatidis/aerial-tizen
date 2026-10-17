@@ -203,7 +203,7 @@
   var videoAvplay = {
       _state: 'NONE',
       open: function (url) {
-        simVideo.src = toBrowserUrl(url);
+        simVideo.src = toBrowserUrl(url) + '#t=1';
         this._state = 'IDLE';
       },
       setDisplayRect: function () {},
