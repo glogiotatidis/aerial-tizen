@@ -25,6 +25,10 @@ echo "== version =="
 if bash "$DIR/version.test.sh"; then :; else failed=1; fi
 
 echo
+echo "== thumbnails =="
+if bash "$DIR/thumbs.test.sh"; then :; else failed=1; fi
+
+echo
 echo "== demo =="
 if bash "$DIR/demo.test.sh"; then :; else failed=1; fi
 
