@@ -41,6 +41,9 @@ check grep -Pzoq '#preload \{\s*width: 100%;\s*height: 100%;' "$OUT/site/index.h
 msg="The demo video starts at the second the thumbnail is cut from"
 check grep -q "toBrowserUrl(url) + '#t=1'" "$OUT/site/index.html"
 
+msg="Backdrop blur sits on the blur class only, never on the base menu"
+check sh -c 'grep -Pzoq "#menu\.blur \{[^}]*backdrop-filter" "$1" && ! grep -Pzoq "#menu \{[^}]*backdrop-filter" "$1"' _ "$ROOT/css/style.css"
+
 msg="The demo page loads the key script"
 check grep -q 'src="keys.js"' "$OUT/site/index.html"
 
