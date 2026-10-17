@@ -104,13 +104,7 @@ storageInitFile(function (saved) {
   }
   loadSettings();
   buildPlaylist();
-  var restored = parseInt(storageGet('aerial_index'), 10);
-  if (restored >= 0 && restored < CATALOG.length && restored !== videoIndex) {
-    telemetry('storage_restored', { backend: storageBackend(), index: restored });
-    playVideo(restored);
-  } else {
-    telemetry('storage_restored', { backend: storageBackend(), index: videoIndex });
-  }
+  telemetry('storage_restored', { backend: storageBackend(), index: videoIndex });
 });
 
 debugProbeSyncBackends();

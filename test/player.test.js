@@ -716,8 +716,13 @@ const { PRELOAD_FADE_MS, BUFFER_TIMEOUT_MS, RETRY_DELAYS_MS, ERROR_SKIP_MS, MAX_
   assert.strictEqual(vm.runInContext('settings.videoOrder', t2.ctx), 'sequential', 'settings saved on disk are restored');
   const same = boot({ main: true, fileContent: '{}' });
   vm.runInContext('startupIndex = videoIndex', same.ctx);
+  const playing = vm.runInContext('videoIndex', same.ctx);
+  same.advance(PRELOAD_FADE_MS);
+  const startedBefore = same.opened.length;
   same.finishRead();
-  assert.ok(same.events.some(e => e[0] === 'storage_restored'), 'a file without a saved video still reports');
+  same.advance(PRELOAD_FADE_MS);
+  assert.ok(same.events.some(e => e[0] === 'storage_restored' && e[1].index === playing), 'the restore reports the video already playing');
+  assert.strictEqual(same.opened.length, startedBefore, 'a restore never restarts the video');
 }
 
 {
