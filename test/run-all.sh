@@ -9,6 +9,10 @@ echo "== player =="
 if node "$DIR/player.test.js"; then :; else failed=1; fi
 
 echo
+echo "== worker =="
+if node "$DIR/worker.test.mjs"; then :; else failed=1; fi
+
+echo
 echo "== storage =="
 if node "$DIR/storage.test.js"; then :; else failed=1; fi
 

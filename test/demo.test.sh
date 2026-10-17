@@ -30,7 +30,7 @@ msg="The demo page loads the list script it ships"
 check grep -q 'src="list.js"' "$OUT/site/index.html"
 
 msg="The demo ships the list and key scripts"
-check [ -s "$OUT/site/list.js" -a -s "$OUT/site/keys.js" ]
+check [ -s "$OUT/site/list.js" -a -s "$OUT/site/keys.js" -a -s "$OUT/site/proxy.js" -a -s "$OUT/site/config.js" ]
 
 msg="The demo page loads the key script"
 check grep -q 'src="keys.js"' "$OUT/site/index.html"

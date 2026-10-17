@@ -14,7 +14,7 @@ rm -rf "$OUT"
 mkdir -p "$OUT"
 cp -r "$DIR/css" "$DIR/js" "$OUT/"
 cp "$DIR/simulate.html" "$OUT/index.html"
-cp "$DIR/demo/list.js" "$DIR/demo/keys.js" "$OUT/"
+cp "$DIR/demo/list.js" "$DIR/demo/keys.js" "$DIR/demo/proxy.js" "$DIR/demo/config.js" "$OUT/"
 
 mkdir -p "$OUT/preload"
 cp "$DIR"/demo/assets/thumbs/*.webp "$OUT/preload/"
