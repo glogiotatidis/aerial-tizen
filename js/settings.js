@@ -124,6 +124,10 @@ function loadSettings() {
 function clampSettings() {
   for (var i = 0; i < MENU_ITEMS.length; i++) {
     var item = MENU_ITEMS[i];
+    if (item.type === 'toggle' && item.key !== 'category') {
+      var listed = item.options.some(function (option) { return option.value === settings[item.key]; });
+      if (!listed) settings[item.key] = DEFAULT_SETTINGS[item.key];
+    }
     if (item.type !== 'number') continue;
     if (settings[item.key] < item.min) settings[item.key] = item.min;
     if (settings[item.key] > item.max) settings[item.key] = item.max;
