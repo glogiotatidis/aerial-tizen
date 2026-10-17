@@ -3,6 +3,7 @@
 [![CI](https://github.com/jeancarlos/aerial-tizen/actions/workflows/ci.yml/badge.svg)](https://github.com/jeancarlos/aerial-tizen/actions/workflows/ci.yml)
 [![Security](https://github.com/jeancarlos/aerial-tizen/actions/workflows/security.yml/badge.svg)](https://github.com/jeancarlos/aerial-tizen/actions/workflows/security.yml)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/jeancarlos/aerial-tizen/badge)](https://scorecard.dev/viewer/?uri=github.com/jeancarlos/aerial-tizen)
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/15610/badge)](https://www.bestpractices.dev/projects/15610)
 [![Coverage](https://img.shields.io/badge/coverage-%E2%89%A590%25-brightgreen)](.c8rc.json)
 [![Release](https://img.shields.io/github/v/release/jeancarlos/aerial-tizen)](https://github.com/jeancarlos/aerial-tizen/releases/latest)
 [![Demo](https://img.shields.io/badge/demo-live-blue)](https://jeancarlos.github.io/aerial-tizen/)
