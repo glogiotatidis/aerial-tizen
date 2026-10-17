@@ -44,8 +44,8 @@ function filterCatalogList(root, query) {
   var needle = query.trim().toLowerCase();
   var heading = null;
   var shown = 0;
-  root.children.forEach(function (child) {
-    if (child.tag === 'h2') {
+  Array.prototype.forEach.call(root.children, function (child) {
+    if (child.tagName === 'H2') {
       if (heading) heading.hidden = shown === 0;
       heading = child;
       shown = 0;
