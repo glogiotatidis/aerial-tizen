@@ -112,6 +112,10 @@ The scripts are plain globals loaded in a fixed order.
 
 `js/catalog.js`, `js/h264map.js` and `preload/*.webp` are generated. See [CONTRIBUTING.md](CONTRIBUTING.md) before editing them.
 
+## Dependencies
+
+The app has no runtime dependencies: it is plain scripts loaded by the TV. Development uses `fast-check` and `c8`, installed from `package-lock.json` with `npm ci --ignore-scripts`. CI tools are installed from hash-pinned requirements in `.github/requirements/` and every GitHub Action is pinned to a commit SHA. A dependency is added only when a few lines cannot do the job, it must be MIT, Apache-2.0, BSD or a similar open licence, and Dependabot proposes updates weekly into `develop`, where patch and minor ones merge after CI passes. Design and interfaces are described in [docs/design.md](docs/design.md) and the threat model in [docs/security-assessment.md](docs/security-assessment.md).
+
 ## Tests
 
 Node only. No framework, no network, no TV.
