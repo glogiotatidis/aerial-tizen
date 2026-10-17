@@ -14,7 +14,7 @@ jobs:
           node-version: "22"
       - name: syntax
         run: |
-          for f in js/*.js test/*.js; do node --check "$f"; done
+          for f in js/*.js demo/*.js test/*.js; do node --check "$f"; done
           for f in *.sh demo/*.sh test/*.sh tools/*.sh; do bash -n "$f"; done
       - run: npm ci --ignore-scripts
       - name: tests with the 90% coverage gate

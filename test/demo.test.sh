@@ -26,6 +26,12 @@ check [ "$want" = "$have" ]
 msg="The demo thumbnails are drawn, not cut from Apple's footage (under 100 KB each)"
 check [ -z "$(find "$OUT/site/preload" -type f -size +100k)" ]
 
+msg="The demo page loads the list script it ships"
+check grep -q 'src="list.js"' "$OUT/site/index.html"
+
+msg="The demo ships the list script"
+check [ -s "$OUT/site/list.js" ]
+
 echo ""
 if [ "$failed" -eq 0 ]; then
   echo "$((passed + failed)) tests, $passed passed, 0 failed"
