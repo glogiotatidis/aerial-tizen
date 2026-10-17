@@ -4,9 +4,9 @@
 [![Security](https://github.com/jeancarlos/aerial-tizen/actions/workflows/security.yml/badge.svg)](https://github.com/jeancarlos/aerial-tizen/actions/workflows/security.yml)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/jeancarlos/aerial-tizen/badge)](https://scorecard.dev/viewer/?uri=github.com/jeancarlos/aerial-tizen)
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/15610/badge)](https://www.bestpractices.dev/projects/15610)
-[![Coverage](https://img.shields.io/badge/coverage-%E2%89%A590%25-brightgreen)](.c8rc.json)
+[![Coverage](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/jeancarlos/aerial-tizen/badges/coverage.json)](https://github.com/jeancarlos/aerial-tizen/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/jeancarlos/aerial-tizen)](https://github.com/jeancarlos/aerial-tizen/releases/latest)
-[![Demo](https://img.shields.io/badge/demo-live-blue)](https://jeancarlos.github.io/aerial-tizen/)
+[![Demo](https://img.shields.io/badge/demo-live-blue)](https://aerial.jeansouza.dev/)
 [![License: MIT](https://img.shields.io/github/license/jeancarlos/aerial-tizen)](LICENSE)
 [![REUSE compliant](https://img.shields.io/badge/REUSE-compliant-green)](https://reuse.software/)
 [![Tizen 6.0+](https://img.shields.io/badge/Tizen-6.0%2B-1428a0)](#requirements)
@@ -14,7 +14,7 @@
 
 Apple TV's aerial screensavers, running natively on a Samsung TV. 115 videos streamed from Apple's CDN and decoded in hardware as HEVC 4K through Samsung's AVPlay.
 
-[**Try the demo**](https://jeancarlos.github.io/aerial-tizen/) - the real app in your browser, no TV needed.
+[**Try the demo**](https://aerial.jeansouza.dev/) - the real app in your browser, no TV needed.
 
 ![Aerial running in the browser demo](docs/screenshot.png)
 
@@ -34,6 +34,14 @@ Each video fades into the next and shows its title and description while it load
 - Either Docker, or the [Tizen Studio CLI](https://developer.tizen.org/development/tizen-studio/download).
 
 You do not need a Samsung developer account. The TV accepts a package signed with the public distributor certificate that ships with Tizen Studio, and that is what the instructions below use.
+
+## Quick start
+
+1. Turn on developer mode on the TV and note its address (steps below).
+2. Run `./tvdeploy.sh --tv <TV address>` in a clone of this repository, or follow the Docker or Tizen Studio steps.
+3. Open the app on the TV. The first video starts within a few seconds.
+
+To remove it, uninstall Aerial from the TV's apps list, or run `sdb -s <TV address>:26101 uninstall` with the app id from `config.xml`. Nothing else is left on the TV or the PC.
 
 ## Install
 
@@ -121,6 +129,17 @@ Use `sdb` for this. `tizen uninstall` and `vd_uninstallapp` fail silently here. 
 **Packaging fails with "An error has occurred"** - look in `~/tizen-studio-data/cli/logs/cli.log`. A `profiles.path` entry in the CLI config is the usual cause.
 
 **A video never starts** - the app retries the video on its own and moves to the next one when it runs out of options, so a single bad file costs you nothing but a pause. If every video fails, the catalog is likely stale; open an issue.
+
+## Verify a release
+
+Every release archive is signed with cosign using GitHub's keyless identity. Download the `.zip` and its `.zip.sigstore.json` from the release, then:
+
+```bash
+cosign verify-blob --bundle aerial-tizen-vX.Y.Z.zip.sigstore.json \
+  --certificate-identity https://github.com/jeancarlos/aerial-tizen/.github/workflows/release.yml@refs/tags/vX.Y.Z \
+  --certificate-oidc-issuer https://token.actions.githubusercontent.com \
+  aerial-tizen-vX.Y.Z.zip
+```
 
 ## Development
 

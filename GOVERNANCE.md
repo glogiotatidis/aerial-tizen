@@ -14,11 +14,15 @@ There are no other collaborators. Adding one is the maintainer's decision, and a
 
 - **Maintainer:** reviews and merges every pull request, cuts releases, answers security reports within the times in [SECURITY.md](SECURITY.md), and keeps the rulesets and required checks in place.
 - **Contributor:** anyone who opens an issue or a pull request, following [CONTRIBUTING.md](CONTRIBUTING.md).
-- **Automation:** promotes `develop` to `main` after CI passes, merges patch and minor Dependabot updates after CI passes, and builds and signs releases from a version tag.
+- **Automation:** opens the `develop` to `main` release PR after CI passes (it merges once the maintainer approves), publishes the coverage badge, merges patch and minor Dependabot updates after CI passes, and builds and signs releases from a version tag.
 
 ## How changes are decided
 
 Changes go through a pull request into `develop`. Required checks must pass. `main` only receives what `develop` already holds, through the promotion workflow. Direct pushes, force pushes and branch deletion are blocked by rulesets on both branches.
+
+## Documentation
+
+The roadmap for the next year is in [ROADMAP.md](ROADMAP.md) and the high-level design is in [docs/design.md](docs/design.md). The code of conduct is [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
 
 ## Access continuity
 
