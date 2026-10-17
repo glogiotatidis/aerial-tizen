@@ -20,6 +20,10 @@ There are no other collaborators. Adding one is the maintainer's decision, and a
 
 Changes go through a pull request into `develop`. Required checks must pass. `main` only receives what `develop` already holds, through the promotion workflow. Direct pushes, force pushes and branch deletion are blocked by rulesets on both branches.
 
+## Documentation
+
+The roadmap for the next year is in [ROADMAP.md](ROADMAP.md) and the high-level design is in [docs/design.md](docs/design.md). The code of conduct is [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
+
 ## Access continuity
 
 The project is MIT licensed and the whole history is public, so anyone can fork it. Access to the repository belongs to the maintainer's GitHub account, which is protected with two-factor authentication.

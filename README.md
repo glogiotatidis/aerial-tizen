@@ -35,6 +35,14 @@ Each video fades into the next and shows its title and description while it load
 
 You do not need a Samsung developer account. The TV accepts a package signed with the public distributor certificate that ships with Tizen Studio, and that is what the instructions below use.
 
+## Quick start
+
+1. Turn on developer mode on the TV and note its address (steps below).
+2. Run `./tvdeploy.sh --tv <TV address>` in a clone of this repository, or follow the Docker or Tizen Studio steps.
+3. Open the app on the TV. The first video starts within a few seconds.
+
+To remove it, uninstall Aerial from the TV's apps list, or run `sdb -s <TV address>:26101 uninstall` with the app id from `config.xml`. Nothing else is left on the TV or the PC.
+
 ## Install
 
 ### 1. Turn on developer mode
@@ -121,6 +129,17 @@ Use `sdb` for this. `tizen uninstall` and `vd_uninstallapp` fail silently here. 
 **Packaging fails with "An error has occurred"** - look in `~/tizen-studio-data/cli/logs/cli.log`. A `profiles.path` entry in the CLI config is the usual cause.
 
 **A video never starts** - the app retries the video on its own and moves to the next one when it runs out of options, so a single bad file costs you nothing but a pause. If every video fails, the catalog is likely stale; open an issue.
+
+## Verify a release
+
+Every release archive is signed with cosign using GitHub's keyless identity. Download the `.zip` and its `.zip.sigstore.json` from the release, then:
+
+```bash
+cosign verify-blob --bundle aerial-tizen-vX.Y.Z.zip.sigstore.json \
+  --certificate-identity https://github.com/jeancarlos/aerial-tizen/.github/workflows/release.yml@refs/tags/vX.Y.Z \
+  --certificate-oidc-issuer https://token.actions.githubusercontent.com \
+  aerial-tizen-vX.Y.Z.zip
+```
 
 ## Development
 

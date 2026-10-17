@@ -10,7 +10,7 @@ export function originOf(request) {
   if (!referer) return null;
   try {
     return new URL(referer).origin;
-  } catch (e) {
+  } catch {
     return null;
   }
 }
