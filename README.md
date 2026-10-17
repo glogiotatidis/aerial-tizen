@@ -6,7 +6,7 @@
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/15610/badge)](https://www.bestpractices.dev/projects/15610)
 [![Coverage](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/jeancarlos/aerial-tizen/badges/coverage.json)](https://github.com/jeancarlos/aerial-tizen/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/jeancarlos/aerial-tizen)](https://github.com/jeancarlos/aerial-tizen/releases/latest)
-[![Demo](https://img.shields.io/badge/demo-live-blue)](https://jeancarlos.github.io/aerial-tizen/)
+[![Demo](https://img.shields.io/badge/demo-live-blue)](https://aerial.jeansouza.dev/)
 [![License: MIT](https://img.shields.io/github/license/jeancarlos/aerial-tizen)](LICENSE)
 [![REUSE compliant](https://img.shields.io/badge/REUSE-compliant-green)](https://reuse.software/)
 [![Tizen 6.0+](https://img.shields.io/badge/Tizen-6.0%2B-1428a0)](#requirements)
@@ -14,7 +14,7 @@
 
 Apple TV's aerial screensavers, running natively on a Samsung TV. 115 videos streamed from Apple's CDN and decoded in hardware as HEVC 4K through Samsung's AVPlay.
 
-[**Try the demo**](https://jeancarlos.github.io/aerial-tizen/) - the real app in your browser, no TV needed.
+[**Try the demo**](https://aerial.jeansouza.dev/) - the real app in your browser, no TV needed.
 
 ![Aerial running in the browser demo](docs/screenshot.png)
 

@@ -41,50 +41,74 @@
     }
     #catalog-button {
       position: fixed;
-      left: 16px;
+      right: 16px;
       bottom: 16px;
       z-index: 45;
-      border: 0;
-      border-radius: 8px;
-      padding: 10px 14px;
-      background: rgba(0, 0, 0, 0.7);
-      color: rgba(255, 255, 255, 0.85);
-      font: 14px -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, sans-serif;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 12px;
+      padding: 10px 16px;
+      background: rgba(255, 255, 255, 0.12);
+      -webkit-backdrop-filter: blur(16px) saturate(160%);
+      backdrop-filter: blur(16px) saturate(160%);
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+      color: #fff;
+      font: 600 14px -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, sans-serif;
       cursor: pointer;
     }
+    #catalog-button:hover { background: rgba(255, 255, 255, 0.2); }
     #catalog-list {
       display: none;
       position: fixed;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      width: min(440px, 100%);
+      top: 12px;
+      right: 12px;
+      bottom: 12px;
+      width: min(440px, calc(100% - 24px));
       box-sizing: border-box;
       z-index: 44;
       overflow-y: auto;
-      padding: 24px 20px 72px;
-      background: rgba(0, 0, 0, 0.82);
+      overscroll-behavior: contain;
+      padding: 16px 14px 72px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 22px;
+      background: rgba(16, 20, 32, 0.38);
+      -webkit-backdrop-filter: blur(28px) saturate(170%);
+      backdrop-filter: blur(28px) saturate(170%);
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.18);
       color: rgba(255, 255, 255, 0.8);
-      font: 15px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, sans-serif;
+      font: 15px/1.4 -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, sans-serif;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
     }
     #catalog-list.open { display: block; }
-    #catalog-list input { width: 100%; box-sizing: border-box; padding: 10px 14px; border: 0; border-radius: 8px; background: rgba(255, 255, 255, 0.12); color: #fff; font: inherit; }
-    #catalog-list h2 { margin: 28px 0 8px; font-size: 20px; color: #fff; }
-    #catalog-list div { padding: 6px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
-    #catalog-list button { margin-right: 12px; padding: 2px 12px; border: 0; border-radius: 6px; background: #2f6bff; color: #fff; font: inherit; cursor: pointer; }
-    #catalog-list a { color: #8ab4ff; margin-right: 12px; }
-    #catalog-list span { color: rgba(255, 255, 255, 0.55); }
+    #catalog-list.open ~ #catalog-button { right: calc(min(440px, 100% - 24px) + 28px); }
+    #catalog-list input { width: 100%; box-sizing: border-box; padding: 11px 16px; border: 1px solid rgba(255, 255, 255, 0.18); border-radius: 12px; background: rgba(255, 255, 255, 0.1); color: #fff; font: inherit; outline: none; }
+    #catalog-list input:focus { border-color: rgba(138, 180, 255, 0.8); background: rgba(255, 255, 255, 0.14); }
+    #catalog-list input::placeholder { color: rgba(255, 255, 255, 0.5); }
+    #catalog-list h2 { position: sticky; top: -16px; z-index: 1; margin: 18px -14px 8px; padding: 10px 14px; font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255, 255, 255, 0.75); background: rgba(16, 20, 32, 0.45); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
+    #catalog-list div div { display: grid; grid-template-columns: 96px 1fr auto; grid-template-areas: "thumb title play" "thumb desc play"; column-gap: 12px; row-gap: 2px; align-items: center; margin-bottom: 8px; padding: 8px; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 14px; background: rgba(255, 255, 255, 0.06); }
+    #catalog-list div div:hover { background: rgba(255, 255, 255, 0.12); border-color: rgba(255, 255, 255, 0.2); }
+    #catalog-list div div[hidden] { display: none; }
+    #catalog-list img { grid-area: thumb; width: 96px; height: 54px; border-radius: 8px; object-fit: cover; background: rgba(0, 0, 0, 0.35); }
+    #catalog-list a { grid-area: title; align-self: end; color: #fff; font-weight: 600; text-decoration: none; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    #catalog-list a:hover { text-decoration: underline; }
+    #catalog-list span { grid-area: desc; align-self: start; color: rgba(255, 255, 255, 0.55); font-size: 12px; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    #catalog-list button { grid-area: play; padding: 7px 14px; border: 1px solid rgba(255, 255, 255, 0.25); border-radius: 999px; background: rgba(47, 107, 255, 0.55); color: #fff; font: 600 13px inherit; font-family: inherit; cursor: pointer; }
+    #catalog-list button:hover { background: rgba(47, 107, 255, 0.85); }
+    @media (max-width: 560px) { #catalog-list.open ~ #catalog-button { right: 16px; } }
     #sim-keys {
       position: fixed;
       top: 16px;
       right: 16px;
       z-index: 30;
-      background: rgba(0,0,0,0.7);
-      color: rgba(255,255,255,0.6);
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      -webkit-backdrop-filter: blur(16px) saturate(160%);
+      backdrop-filter: blur(16px) saturate(160%);
+      color: rgba(255,255,255,0.8);
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, sans-serif;
       font-size: 13px;
       padding: 12px 16px;
-      border-radius: 8px;
+      border-radius: 12px;
       line-height: 1.6;
       pointer-events: none;
       opacity: 1;

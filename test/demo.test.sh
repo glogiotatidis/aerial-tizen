@@ -38,6 +38,15 @@ check [ -s "$OUT/site/list.js" -a -s "$OUT/site/keys.js" -a -s "$OUT/site/proxy.
 msg="The demo page loads the key script"
 check grep -q 'src="keys.js"' "$OUT/site/index.html"
 
+msg="The file server home page lists live files"
+check grep -q "fetch('files.json')" "$ROOT/server/index.html"
+
+msg="The file server home page loads the demo catalog"
+check grep -q 'https://aerial.jeansouza.dev/catalog.js' "$ROOT/server/index.html"
+
+msg="The file server home page shows a thumbnail per video"
+check grep -q "'thumbnail/'" "$ROOT/server/index.html"
+
 echo ""
 if [ "$failed" -eq 0 ]; then
   echo "$((passed + failed)) tests, $passed passed, 0 failed"

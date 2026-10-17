@@ -1,6 +1,6 @@
 const UPSTREAM = 'http://sylvan.apple.com';
 const PATH = /^\/(Aerials\/2x\/)?Videos\/[\w.-]+\.(mov|mp4)$/;
-const ALLOWED_ORIGINS = ['https://jeancarlos.github.io', 'http://localhost:8000', 'http://127.0.0.1:8000'];
+const ALLOWED_ORIGINS = ['https://aerial.jeansouza.dev', 'http://localhost:8000', 'http://127.0.0.1:8000'];
 const PASSED = ['content-type', 'content-length', 'content-range', 'accept-ranges', 'etag', 'last-modified'];
 
 export function originOf(request) {
