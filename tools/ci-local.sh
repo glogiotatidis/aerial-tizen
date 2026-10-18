@@ -1,5 +1,6 @@
 #!/bin/bash
 set -eu
+unset GIT_DIR GIT_WORK_TREE GIT_INDEX_FILE
 cd "$(git rev-parse --show-toplevel)"
 echo "ci-local: syntax"
 for f in js/*.js demo/*.js test/*.js worker/*.mjs test/*.mjs; do [ -e "$f" ] && node --check "$f"; done
