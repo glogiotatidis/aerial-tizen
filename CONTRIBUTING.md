@@ -76,6 +76,10 @@ The app is plain ES5 loaded as scripts, because older Tizen WebKit builds cannot
 
 Every change reaches `develop` through a pull request, and `main` receives only what `develop` holds, through a release PR that needs the code owner's approval. The reviewer checks that the change is one concern, that it keeps the constraints above, that a test fails without it, and that CI is green. A change is accepted when those hold and the reviewer has no open question. Reviewers are named in `.github/CODEOWNERS`.
 
+## Releases
+
+A release tag publishes the `CHANGELOG.md` section of that version, plus the upgrade impact, as the release notes (`tools/release-notes.sh`), and the release job fails when the section is missing. Before tagging `vX.Y.Z`, rename `Unreleased` to `X.Y.Z - date` and keep every line written for people who install the app, not as a commit title.
+
 ## Sign your commits
 
 Every commit needs a `Signed-off-by: Your Name <you@example.com>` line, which you add with `git commit -s`. It states the [Developer Certificate of Origin](https://developercertificate.org/): you wrote the change or have the right to submit it under the project's MIT licence. The `dco` check fails a pull request that has an unsigned commit.
