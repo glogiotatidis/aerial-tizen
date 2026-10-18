@@ -107,6 +107,8 @@
   "static_analysis_fixed_justification": "CodeQL, ESLint and zizmor in security.yml and ci.yml on every push - https://github.com/jeancarlos/aerial-tizen/blob/main/.github/workflows/security.yml",
   "static_analysis_often_status": "Met",
   "static_analysis_often_justification": "CodeQL, ESLint and zizmor in security.yml and ci.yml on every push - https://github.com/jeancarlos/aerial-tizen/blob/main/.github/workflows/security.yml",
+  "static_analysis_common_vulnerabilities_status": "Met",
+  "static_analysis_common_vulnerabilities_justification": "CodeQL runs its default query suite for JavaScript, which includes the security queries for injection, path traversal and unsafe deserialization (security.yml) - https://github.com/jeancarlos/aerial-tizen/blob/main/.github/workflows/security.yml",
   "dynamic_analysis_status": "Met",
   "dynamic_analysis_justification": "npm run fuzz (fast-check, test/fuzz.test.js) in ci.yml and before every release in release.yml - https://github.com/jeancarlos/aerial-tizen/blob/main/.github/workflows/ci.yml",
   "dynamic_analysis_enable_assertions_status": "Met",
