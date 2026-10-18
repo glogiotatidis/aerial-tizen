@@ -20,6 +20,9 @@ jobs:
         with:
           node-version: "22"
           package-manager-cache: false
+      - run: npm ci --ignore-scripts
+      - name: fuzz settings
+        run: npm run fuzz
       - name: version matches the tag
         env:
           REF_TYPE: ${{ github.ref_type }}
