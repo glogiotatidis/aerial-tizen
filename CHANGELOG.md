@@ -7,6 +7,7 @@ Notable changes per release. Versions follow [Semantic Versioning](https://semve
 - Release archives are stored uncompressed so anyone can rebuild one bit for bit from its tag; the README shows how.
 - The demo shows a real frame of each video, lists all 115 videos with Play buttons and a filter, and can play real video through an optional Cloudflare Worker (`worker/`).
 - CI fails below 90% test coverage, and zizmor is a required check on `main` and `develop`.
+- The demo page ships a Content Security Policy and the proxy Worker answers with nosniff.
 
 ## 1.0.2 - 2026-10-17
 
