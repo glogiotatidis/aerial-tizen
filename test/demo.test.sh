@@ -53,6 +53,9 @@ check grep -q "#catalog-list.open { visibility: visible; opacity: 1; transform: 
 msg="The demo video offers no picture-in-picture button"
 check grep -q '<video id="sim-video" muted disablepictureinpicture' "$OUT/site/index.html"
 
+msg="The demo is installable: favicon, manifest and both icons ship and are linked"
+check sh -c 'cd "$1" && [ -s favicon.ico -a -s icons/icon-192.png -a -s icons/icon-512.png ] && grep -q "href=\"favicon.ico\"" index.html && grep -q "href=\"manifest.webmanifest\"" index.html && grep -q "icons/icon-512.png" manifest.webmanifest' _ "$OUT/site"
+
 msg="The demo page loads the key script"
 check grep -q 'src="keys.js"' "$OUT/site/index.html"
 
