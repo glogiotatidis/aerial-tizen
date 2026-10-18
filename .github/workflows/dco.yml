@@ -1,5 +1,7 @@
 name: dco
-on: [pull_request]
+on:
+  pull_request:
+    branches: [develop]
 permissions:
   contents: read
 jobs:
