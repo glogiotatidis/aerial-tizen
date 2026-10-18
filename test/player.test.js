@@ -59,7 +59,7 @@ function boot(opts) {
     ctx.tizen.filesystem = { resolve: (where, ok) => ok(dir) };
   }
   vm.createContext(ctx);
-  for (const f of ['storage', 'telemetry', 'settings', 'player', 'menu', 'debug']) {
+  for (const f of ['i18n', 'storage', 'telemetry', 'settings', 'player', 'menu', 'debug']) {
     vm.runInContext(fs.readFileSync(path.join(__dirname, '../js', f + '.js'), 'utf8'), ctx, { filename: path.join(__dirname, '../js', f + '.js') });
   }
   // Virtual clock: a test says how long it waited, and the clock decides what
