@@ -35,7 +35,12 @@ export function makeHandler(upstreamFetch) {
     const headers = {};
     const range = request.headers.get('range');
     if (range) headers.range = range;
-    const upstream = await upstreamFetch(UPSTREAM + path, { method: request.method, headers });
+    let upstream;
+    try {
+      upstream = await upstreamFetch(UPSTREAM + path, { method: request.method, headers });
+    } catch {
+      return new Response('bad gateway', { status: 502, headers: cors });
+    }
 
     const out = new Headers(cors);
     PASSED.forEach(name => {

@@ -70,4 +70,11 @@ const ask = (url, headers, method) => handle(new Request(url, { method: method |
   assert.strictEqual(preflight.headers.get('access-control-allow-headers'), 'range');
 }
 
+{
+  const down = makeHandler(async () => { throw new TypeError('network connection lost'); });
+  const res = await down(new Request(FILE, { headers: { origin: PAGE } }));
+  assert.strictEqual(res.status, 502, 'an unreachable upstream must answer 502, not crash the Worker');
+  assert.strictEqual(res.headers.get('access-control-allow-origin'), PAGE, 'the 502 must carry CORS so the player sees a status, not an opaque failure');
+}
+
 console.log('worker tests passed');

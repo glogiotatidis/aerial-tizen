@@ -6,7 +6,7 @@ Thanks for wanting to help. This is a small app with unusual constraints, and mo
 
 **No build step, no dependencies, no module system.** The app is loaded as plain scripts sharing globals. Adding a bundler would mean a contributor needs a toolchain to change a line of CSS, and the package that reaches the TV would stop matching the files in the repo.
 
-**ES5-era syntax only.** Tizen 6.0 runs Chromium 76. No arrow functions, `let`/`const`, template literals, spread, classes or `async`/`await` in `js/`. `simulate.html` is desktop-only and may use anything.
+**ES5-era syntax only.** Tizen 6.0 runs Chromium 76. No arrow functions, `let`/`const`, template literals, spread, classes or `async`/`await` in `js/`. `demo/` is desktop-only and may use anything.
 
 **CSS that Chromium 76 understands.** `inset` and flexbox `gap` are both too new and will silently do nothing on the TV - a mistake that already shipped once and made the fade overlay zero-sized.
 
@@ -20,11 +20,11 @@ You do not need a TV to contribute. [DEVELOPMENT.md](DEVELOPMENT.md) covers the 
 git clone <your fork>
 cd aerial-tizen
 ./test/run-all.sh          # both suites, no network, no TV
-python3 -m http.server 8080
-# open http://localhost:8080/simulate.html
+bash demo/build.sh site && python3 -m http.server -d site 8080
+# open http://localhost:8080/
 ```
 
-`simulate.html` mocks Samsung's `webapis.avplay` and `tizen` objects and plays the 1080p H264 variants of the same videos, so the whole UI, the menu, the transitions and the failure paths are exercisable in a desktop browser.
+The mocks in `demo/avplay.js` and `demo/boot.js` stand in for Samsung's `webapis.avplay` and `tizen` objects and plays the 1080p H264 variants of the same videos, so the whole UI, the menu, the transitions and the failure paths are exercisable in a desktop browser.
 
 ## What is generated and what is hand-written
 

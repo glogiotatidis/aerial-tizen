@@ -6,3 +6,7 @@ function simKeyAction(keyCode, tag, listOpen) {
   if (keyCode === 27) return 'back';
   return 'pass';
 }
+
+function simBackKey(menuOpen) {
+  return menuOpen ? 10009 : 13;
+}
