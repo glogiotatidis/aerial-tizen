@@ -4,29 +4,29 @@ Answers for <https://www.bestpractices.dev/projects/15610> (passing level). Proj
 
 | Criterion | Answer | Evidence |
 |---|---|---|
-| description_good, interact, contribution, contribution_requirements | Met | README.md, CONTRIBUTING.md (Pull requests, Coding standard, Code review), GOVERNANCE.md |
-| floss_license, floss_license_osi, license_location | Met | MIT, LICENSE at the repository root, LICENSES/MIT.txt |
-| documentation_basics, documentation_interface | Met | README.md (install on a TV, settings, catalog), DEVELOPMENT.md, docs/design.md |
-| sites_https, delivery_mitm | Met | github.com and GitHub Pages only, all HTTPS; release zips carry a cosign Sigstore bundle |
+| description_good, interact, contribution, contribution_requirements | Met | [README.md](https://github.com/jeancarlos/aerial-tizen/blob/main/README.md), [CONTRIBUTING.md](https://github.com/jeancarlos/aerial-tizen/blob/main/CONTRIBUTING.md) ([Pull requests](https://github.com/jeancarlos/aerial-tizen/blob/main/CONTRIBUTING.md#pull-requests), [Coding standard](https://github.com/jeancarlos/aerial-tizen/blob/main/CONTRIBUTING.md#coding-standard), [Code review](https://github.com/jeancarlos/aerial-tizen/blob/main/CONTRIBUTING.md#code-review)), [GOVERNANCE.md](https://github.com/jeancarlos/aerial-tizen/blob/main/GOVERNANCE.md) |
+| floss_license, floss_license_osi, license_location | Met | [MIT](https://opensource.org/license/mit), [LICENSE](https://github.com/jeancarlos/aerial-tizen/blob/main/LICENSE) at the repository root, [LICENSES/MIT.txt](https://github.com/jeancarlos/aerial-tizen/blob/main/LICENSES/MIT.txt) |
+| documentation_basics, documentation_interface | Met | [README.md](https://github.com/jeancarlos/aerial-tizen/blob/main/README.md) (install on a TV, settings, catalog), [DEVELOPMENT.md](https://github.com/jeancarlos/aerial-tizen/blob/main/DEVELOPMENT.md), [docs/design.md](https://github.com/jeancarlos/aerial-tizen/blob/main/docs/design.md) |
+| sites_https, delivery_mitm | Met | [github.com](https://github.com/jeancarlos/aerial-tizen) and [GitHub Pages](https://aerial.jeansouza.dev) only, all HTTPS; release zips carry a [cosign](https://docs.sigstore.dev/cosign/) [Sigstore](https://www.sigstore.dev/) bundle |
 | sites_password_security | N/A | the project's sites store no user passwords |
-| discussion, english | Met | GitHub issues and pull requests, English |
-| maintained | Met | commits every week, see the commit history |
-| repo_public, repo_track, repo_interim, repo_distributed | Met | public git repository on GitHub |
-| version_unique, version_semver, version_tags | Met | tags vX.Y.Z (semantic versioning), package.json version |
-| release_notes | Met | https://github.com/jeancarlos/aerial-tizen/releases: each release's notes are its section of CHANGELOG.md plus the upgrade impact, published by release.yml through tools/release-notes.sh; the job fails without a section and never uses the git log |
-| release_notes_vulns | N/A | no publicly known vulnerability fixed in a release so far; SECURITY.md says the notes name security fixes |
-| report_process, report_tracker, report_responses, enhancement_responses, report_archive | Met | GitHub issues, CONTRIBUTING.md |
-| vulnerability_report_process, vulnerability_report_private, vulnerability_report_response | Met | SECURITY.md, GitHub private vulnerability reporting, 7 day acknowledgement |
-| build, build_common_tools, build_floss_tools | N/A | plain HTML, CSS and JavaScript for a Samsung Tizen TV, no compile step; release.yml packages the zip and setup.sh installs it |
-| test, test_invocation, test_most, test_continuous_integration | Met | `npm test` runs test/run-all.sh, `npm run coverage` gates c8 at 90 percent, .github/workflows/ci.yml |
-| test_policy, tests_are_added, tests_documented_added | Met | CONTRIBUTING.md "Tests"; .github/workflows/tests-policy.yml |
-| warnings, warnings_fixed, warnings_strict | Met | ESLint (`npm run lint`) in CI |
-| know_secure_design, know_common_errors | Met | docs/security-assessment.md, docs/design.md, CONTRIBUTING.md constraints |
-| delivery_unsigned | Met | release zip signed with cosign sign-blob (Sigstore) and verified in release.yml |
-| vulnerabilities_fixed_60_days, vulnerabilities_critical_fixed | Met | none known open; SECURITY.md promises a fix or assessment within 30 days; Dependabot |
-| no_leaked_credentials | Met | no secrets in the repository; js/local-config.example.js is a template and the real file is ignored |
-| static_analysis, static_analysis_fixed, static_analysis_often | Met | CodeQL, ESLint and zizmor in security.yml and ci.yml on every push |
-| static_analysis_common_vulnerabilities | Met | CodeQL runs its default query suite for JavaScript, which includes the security queries for injection, path traversal and unsafe deserialization (security.yml) |
-| dynamic_analysis, dynamic_analysis_enable_assertions | Met | `npm run fuzz` (fast-check, test/fuzz.test.js) in ci.yml and before every release in release.yml |
+| discussion, english | Met | [GitHub issues](https://github.com/jeancarlos/aerial-tizen/issues) and pull requests, English |
+| maintained | Met | [commits every week](https://github.com/jeancarlos/aerial-tizen/commits/main), see the commit history |
+| repo_public, repo_track, repo_interim, repo_distributed | Met | [public git repository](https://github.com/jeancarlos/aerial-tizen) on GitHub, with [branches](https://github.com/jeancarlos/aerial-tizen/branches) and full history |
+| version_unique, version_semver, version_tags | Met | tags vX.Y.Z ([semantic versioning](https://semver.org/)), [package.json](https://github.com/jeancarlos/aerial-tizen/blob/main/package.json) version |
+| release_notes | Met | [releases](https://github.com/jeancarlos/aerial-tizen/releases): each release's notes are its section of [CHANGELOG.md](https://github.com/jeancarlos/aerial-tizen/blob/main/CHANGELOG.md) plus the upgrade impact, published by [release.yml](https://github.com/jeancarlos/aerial-tizen/blob/main/.github/workflows/release.yml) through [tools/release-notes.sh](https://github.com/jeancarlos/aerial-tizen/blob/main/tools/release-notes.sh); the job fails without a section and never uses the git log |
+| release_notes_vulns | N/A | no publicly known vulnerability fixed in a release so far; [SECURITY.md](https://github.com/jeancarlos/aerial-tizen/blob/main/SECURITY.md) says the notes name security fixes |
+| report_process, report_tracker, report_responses, enhancement_responses, report_archive | Met | [GitHub issues](https://github.com/jeancarlos/aerial-tizen/issues), [CONTRIBUTING.md](https://github.com/jeancarlos/aerial-tizen/blob/main/CONTRIBUTING.md) |
+| vulnerability_report_process, vulnerability_report_private, vulnerability_report_response | Met | [SECURITY.md](https://github.com/jeancarlos/aerial-tizen/blob/main/SECURITY.md), GitHub [private vulnerability reporting](https://github.com/jeancarlos/aerial-tizen/security/advisories/new), 7 day acknowledgement |
+| build, build_common_tools, build_floss_tools | N/A | plain HTML, CSS and JavaScript for a Samsung Tizen TV, no compile step; [release.yml](https://github.com/jeancarlos/aerial-tizen/blob/main/.github/workflows/release.yml) packages the zip and [setup.sh](https://github.com/jeancarlos/aerial-tizen/blob/main/setup.sh) installs it |
+| test, test_invocation, test_most, test_continuous_integration | Met | `npm test` runs [test/run-all.sh](https://github.com/jeancarlos/aerial-tizen/blob/main/test/run-all.sh), `npm run coverage` gates c8 at 90 percent, [.github/workflows/ci.yml](https://github.com/jeancarlos/aerial-tizen/blob/main/.github/workflows/ci.yml) |
+| test_policy, tests_are_added, tests_documented_added | Met | [CONTRIBUTING.md](https://github.com/jeancarlos/aerial-tizen/blob/main/CONTRIBUTING.md) [Tests](https://github.com/jeancarlos/aerial-tizen/blob/main/CONTRIBUTING.md#tests); [.github/workflows/tests-policy.yml](https://github.com/jeancarlos/aerial-tizen/blob/main/.github/workflows/tests-policy.yml) |
+| warnings, warnings_fixed, warnings_strict | Met | [ESLint](https://eslint.org/) (`npm run lint`) in CI |
+| know_secure_design, know_common_errors | Met | [docs/security-assessment.md](https://github.com/jeancarlos/aerial-tizen/blob/main/docs/security-assessment.md), [docs/design.md](https://github.com/jeancarlos/aerial-tizen/blob/main/docs/design.md), [CONTRIBUTING.md](https://github.com/jeancarlos/aerial-tizen/blob/main/CONTRIBUTING.md) constraints |
+| delivery_unsigned | Met | release zip signed with [cosign](https://docs.sigstore.dev/cosign/) sign-blob ([Sigstore](https://www.sigstore.dev/)) and verified in [release.yml](https://github.com/jeancarlos/aerial-tizen/blob/main/.github/workflows/release.yml) |
+| vulnerabilities_fixed_60_days, vulnerabilities_critical_fixed | Met | none known open; [SECURITY.md](https://github.com/jeancarlos/aerial-tizen/blob/main/SECURITY.md) promises a fix or assessment within 30 days; [Dependabot](https://docs.github.com/en/code-security/dependabot) |
+| no_leaked_credentials | Met | no secrets in the repository; [js/local-config.example.js](https://github.com/jeancarlos/aerial-tizen/blob/main/js/local-config.example.js) is a template and the real file is ignored |
+| static_analysis, static_analysis_fixed, static_analysis_often | Met | [CodeQL](https://codeql.github.com/), [ESLint](https://eslint.org/) and [zizmor](https://github.com/zizmorcore/zizmor) in [security.yml](https://github.com/jeancarlos/aerial-tizen/blob/main/.github/workflows/security.yml) and [ci.yml](https://github.com/jeancarlos/aerial-tizen/blob/main/.github/workflows/ci.yml) on every push |
+| static_analysis_common_vulnerabilities | Met | [CodeQL](https://codeql.github.com/) runs its default query suite for JavaScript, which includes the security queries for injection, path traversal and unsafe deserialization ([security.yml](https://github.com/jeancarlos/aerial-tizen/blob/main/.github/workflows/security.yml)) |
+| dynamic_analysis, dynamic_analysis_enable_assertions | Met | `npm run fuzz` ([fast-check](https://fast-check.dev/), test/fuzz.test.js) in [ci.yml](https://github.com/jeancarlos/aerial-tizen/blob/main/.github/workflows/ci.yml) and before every release in [release.yml](https://github.com/jeancarlos/aerial-tizen/blob/main/.github/workflows/release.yml) |
 | dynamic_analysis_unsafe, dynamic_analysis_fixed | N/A | memory-safe language |
-| crypto_* | N/A | no cryptography implemented; the app only plays video and the release signature is made by cosign in CI |
+| crypto_* | N/A | no cryptography implemented; the app only plays video and the release signature is made by [cosign](https://docs.sigstore.dev/cosign/) in CI |
