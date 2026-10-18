@@ -20,4 +20,5 @@ check "ci runs the linter" has ci.yml 'npm run lint'
 check "lint script exists" grep -q '"lint": "eslint .' "$ROOT/package.json"
 check "release pins the signing identity" has release.yml 'workflows/release.yml@${REF}'
 check "release no longer accepts any workflow" bash -c "! grep -q certificate-identity-regexp '$ROOT/.github/workflows/release.yml'"
+check "pull request workflows skip PRs into main" bash -c "for f in '$ROOT'/.github/workflows/*.yml; do grep -q '^  pull_request:' \$f && ! grep -A1 '^  pull_request:' \$f | grep -q 'branches: \[develop\]' && exit 1; done; exit 0"
 exit "$fails"
