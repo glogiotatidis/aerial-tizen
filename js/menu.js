@@ -19,7 +19,7 @@ function createMenuItemEl(item, isActive) {
 
   if (item.type === 'toggle') {
     for (var i = 0; i < item.options.length; i++) {
-      if (item.options[i].value === value) display = item.options[i].label;
+      if (item.options[i].value === value) display = t(item.options[i].label);
     }
   } else if (item.type === 'number') {
     display = value + item.suffix;
@@ -28,14 +28,14 @@ function createMenuItemEl(item, isActive) {
   }
 
   var busy = menuBusyKey === item.key;
-  if (busy) display = 'testing…';
+  if (busy) display = t('testing…');
 
   var row = document.createElement('div');
   row.className = 'menu-item' + (isActive ? ' active' : '');
 
   var label = document.createElement('span');
   label.className = 'menu-label';
-  label.textContent = item.label;
+  label.textContent = t(item.label);
 
   var val = document.createElement('span');
   val.className = 'menu-value';
@@ -154,7 +154,7 @@ function menuChangeToggle(item, current, direction) {
   testConnection(settings.customServerUrl, function (success) {
     menuBusyKey = null;
     applySetting(item.key, success);
-    if (!success) alert('Could not reach custom server. Test failed.');
+    if (!success) alert(t('Could not reach custom server. Test failed.'));
   });
 }
 
@@ -166,7 +166,7 @@ function menuChangeNumber(item, current, direction) {
 }
 
 function menuChangeText(item, current) {
-  var newVal = prompt('Enter files location URL', current);
+  var newVal = prompt(t('Enter files location URL'), current);
   if (!newVal) return;
   menuBusyKey = item.key;
   renderMenu();
@@ -176,7 +176,7 @@ function menuChangeText(item, current) {
       applySetting(item.key, newVal);
     } else {
       renderMenu();
-      alert('Could not reach ' + newVal + '. URL not updated.');
+      alert(t('Could not reach {0}. URL not updated.', newVal));
     }
   });
 }
