@@ -13,7 +13,7 @@ Answers for <https://www.bestpractices.dev/projects/15610> (passing level). Proj
 | maintained | Met | commits every week, see the commit history |
 | repo_public, repo_track, repo_interim, repo_distributed | Met | public git repository on GitHub |
 | version_unique, version_semver, version_tags | Met | tags vX.Y.Z (semantic versioning), package.json version |
-| release_notes | Met | CHANGELOG.md and GitHub release notes generated per tag by release.yml |
+| release_notes | Met | https://github.com/jeancarlos/aerial-tizen/releases: each release's notes are its section of CHANGELOG.md plus the upgrade impact, published by release.yml through tools/release-notes.sh; the job fails without a section and never uses the git log |
 | release_notes_vulns | N/A | no publicly known vulnerability fixed in a release so far; SECURITY.md says the notes name security fixes |
 | report_process, report_tracker, report_responses, enhancement_responses, report_archive | Met | GitHub issues, CONTRIBUTING.md |
 | vulnerability_report_process, vulnerability_report_private, vulnerability_report_response | Met | SECURITY.md, GitHub private vulnerability reporting, 7 day acknowledgement |

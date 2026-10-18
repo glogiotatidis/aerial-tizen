@@ -44,7 +44,7 @@
   "version_tags_status": "Met",
   "version_tags_justification": "tags vX.Y.Z (semantic versioning), https://github.com/jeancarlos/aerial-tizen/blob/main/package.json version",
   "release_notes_status": "Met",
-  "release_notes_justification": "https://github.com/jeancarlos/aerial-tizen/blob/main/CHANGELOG.md and GitHub release notes generated per tag by release.yml",
+  "release_notes_justification": "https://github.com/jeancarlos/aerial-tizen/releases: each release's notes are its section of https://github.com/jeancarlos/aerial-tizen/blob/main/CHANGELOG.md plus the upgrade impact, published by release.yml through tools/release-notes.sh; the job fails without a section and never uses the git log",
   "release_notes_vulns_status": "N/A",
   "release_notes_vulns_justification": "no publicly known vulnerability fixed in a release so far; https://github.com/jeancarlos/aerial-tizen/blob/main/SECURITY.md says the notes name security fixes",
   "report_process_status": "Met",
