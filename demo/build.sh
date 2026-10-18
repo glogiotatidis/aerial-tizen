@@ -14,13 +14,16 @@ rm -rf "$OUT"
 mkdir -p "$OUT"
 cp -r "$DIR/css" "$DIR/js" "$OUT/"
 cp "$DIR/demo/list.js" "$DIR/demo/keys.js" "$DIR/demo/proxy.js" "$DIR/demo/config.js" \
-  "$DIR/demo/avplay.js" "$DIR/demo/boot.js" "$DIR/demo/sim.css" "$OUT/"
+  "$DIR/demo/avplay.js" "$DIR/demo/boot.js" "$DIR/demo/sim.css" \
+  "$DIR/demo/favicon.ico" "$DIR/demo/manifest.webmanifest" "$OUT/"
+cp -r "$DIR/demo/icons" "$OUT/"
 
 # The page is the app's own index.html with the TV-only parts swapped for the
 # browser stand-ins, so a new element in the app reaches the demo untouched.
 sed \
   -e 's|<title>Aerial Screensaver</title>|<title>Aerial Screensaver - Simulator</title>|' \
   -e 's|<link rel="stylesheet" href="css/style.css">|&\n  <link rel="stylesheet" href="sim.css">|' \
+  -e '/sim.css/r '"$DIR/demo/head.html" \
   -e '/<body>/r '"$DIR/demo/body-top.html" \
   -e 's|BACK to close|ESC to close|' \
   -e '/<object id="player"/d' \
