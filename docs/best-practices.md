@@ -26,6 +26,7 @@ Answers for <https://www.bestpractices.dev/projects/15610> (passing level). Proj
 | vulnerabilities_fixed_60_days, vulnerabilities_critical_fixed | Met | none known open; SECURITY.md promises a fix or assessment within 30 days; Dependabot |
 | no_leaked_credentials | Met | no secrets in the repository; js/local-config.example.js is a template and the real file is ignored |
 | static_analysis, static_analysis_fixed, static_analysis_often | Met | CodeQL, ESLint and zizmor in security.yml and ci.yml on every push |
+| static_analysis_common_vulnerabilities | Met | CodeQL runs its default query suite for JavaScript, which includes the security queries for injection, path traversal and unsafe deserialization (security.yml) |
 | dynamic_analysis, dynamic_analysis_enable_assertions | Met | `npm run fuzz` (fast-check, test/fuzz.test.js) in ci.yml and before every release in release.yml |
 | dynamic_analysis_unsafe, dynamic_analysis_fixed | N/A | memory-safe language |
 | crypto_* | N/A | no cryptography implemented; the app only plays video and the release signature is made by cosign in CI |
